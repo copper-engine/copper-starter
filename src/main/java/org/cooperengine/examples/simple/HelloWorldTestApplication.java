@@ -15,7 +15,6 @@
  */
 package org.cooperengine.examples.simple;
 
-import org.cooperengine.examples.simple.external.HelloWorldAdapter;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 import org.slf4j.Logger;
@@ -26,6 +25,7 @@ import java.io.File;
 public final class HelloWorldTestApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldTestApplication.class);
+    private static int NUMBER_OF_WORKFLOWS = 5000;
 
     private TransientScottyEngine engine;
 
@@ -49,11 +49,11 @@ public final class HelloWorldTestApplication {
         //Startup the engine
         engine = factory.create();
 
-        // Service provides an API to be called by the external adapter and needs to notify the engine.
+        // HelloWorldService provides an API to be called by the external adapter and needs to notify the engine.
         HelloWorldService.init(engine);
 
-        //start 10000 workflows with request data
-        for (int i = 0; i < 10000; i++) {
+        //start 5000 workflows with request data
+        for (int i = 0; i < NUMBER_OF_WORKFLOWS; i++) {
             try {
                 engine.run("HelloWorldWorkFlow", getNewData());
             } catch (CopperException e) {

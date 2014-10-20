@@ -181,7 +181,7 @@ javadoc {
 }
 
 
-task runCopper (type: JavaExec, dependsOn: classes){
+task runHello (type: JavaExec, dependsOn: classes){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.cooperengine.examples.simple.HelloWorldTestApplication"
 }

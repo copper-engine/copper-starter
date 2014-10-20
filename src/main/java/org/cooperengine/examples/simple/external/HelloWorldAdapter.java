@@ -73,11 +73,6 @@ public class HelloWorldAdapter {
         Thread someThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.currentThread().sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 HelloWorldRequest request = data.get(correlationId);
                 if (request == null) {
                     logger.warn("no entry found for ID:" + correlationId);
