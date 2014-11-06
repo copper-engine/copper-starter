@@ -1,7 +1,7 @@
-cooper-starter
+copper-starter
 ==============
 
-A quickstarter example project for cooper-engine.
+A quickstarter example project for copper-engine.
 [copper engine](https://github.com/copper-engine/copper-engine)
 
 Features of copper-engine:
@@ -18,14 +18,4 @@ What you need to have:
 ----------------------
 * Java JDK 1.6+
 * gradle 2.0+
-* Java Ide eclipse or intellij IDEA
-
-What you need to know:
-----------------------
-
-* Java Source Code in src/workflow/java is parsed, compiled and instrumented at runtime
-
-Injecting Services into workflow
---------------------------------
-* Spring
-* Pojo
+* Java IDE Eclipse or intellij IDEA or terminal 

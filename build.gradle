@@ -185,3 +185,19 @@ task runHello (type: JavaExec, dependsOn: classes){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.simple.HelloWorldTestApplication"
 }
+
+task runEngine (type: JavaExec, dependsOn: classes){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.copperengine.examples.orchestration.Main"
+}
+
+task runService (type: JavaExec, dependsOn: classes){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.copperengine.examples.orchestration.simulators.servers.ServiceSimulatorMain"
+}
+
+task sendMessage (type: JavaExec, dependsOn: classes){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient"
+    args = "http://localhost:9090/orchestration?wsdl 491716677889 sc00p"
+}
