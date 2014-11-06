@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cooperengine.examples.simple.external;
+package org.copperengine.examples.simple.external;
 
-import org.cooperengine.examples.simple.HelloWorldRequest;
-import org.cooperengine.examples.simple.HelloWorldService;
+import org.copperengine.examples.simple.HelloWorldRequest;
+import org.copperengine.examples.simple.HelloWorldService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * The external Hello World Adapter.

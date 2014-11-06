@@ -13,32 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cooperengine.examples.simple;
+package org.copperengine.examples.simple;
 
-import org.cooperengine.examples.simple.external.HelloWorldAdapter;
 import org.copperengine.core.Interrupt;
 import org.copperengine.core.Response;
 import org.copperengine.core.WaitMode;
 import org.copperengine.core.Workflow;
 import org.copperengine.core.WorkflowDescription;
+import org.copperengine.examples.simple.external.HelloWorldAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WorkflowDescription(alias = "HelloWorldWorkFlow", majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
-public class HelloWorldWorkFlow extends Workflow<HelloWorldRequest> {
+@WorkflowDescription(alias = "HelloWorldWorkFlow", majorVersion = 2, minorVersion = 0, patchLevelVersion = 0)
+public class HelloWorldWorkFlowV2 extends Workflow<HelloWorldRequest> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(HelloWorldWorkFlow.class);
+    private static final Logger logger = LoggerFactory.getLogger(HelloWorldWorkFlowV2.class);
 
     @Override
     public void main() throws Interrupt {
         final String correlationId = HelloWorldAdapter.get().asyncSendHelloWorld(getData());
-        logger.info(correlationId+ ": workflow    break: Hello World!");
+        final String correlationId2 = HelloWorldAdapter.get().asyncSendHelloWorld(getData());
+        logger.info(correlationId + ": workflow version2: Hello World!");
 
-        wait(WaitMode.ALL, 5 * 60 * 60 * 1000, correlationId);
-        final Response<HelloWorldResponse> response = getAndRemoveResponse(correlationId);
-        logger.info(correlationId + ": workflow continue: " + response.getResponse().getAnswer());
+        wait(WaitMode.FIRST, 5 * 60 * 60 * 1000, correlationId, correlationId2);
+        Response<HelloWorldResponse> response = getAndRemoveResponse(correlationId);
+        if (response == null) {
+            response = getAndRemoveResponse(correlationId2);
+        }
+        logger.info(correlationId + ": workflow v2 continue: " + response.getResponse().getAnswer());
     }
 
 }

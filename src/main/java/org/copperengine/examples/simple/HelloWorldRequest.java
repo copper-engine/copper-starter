@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cooperengine.examples.simple;
+package org.copperengine.examples.simple;
 
 import java.io.Serializable;
 

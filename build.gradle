@@ -183,5 +183,5 @@ javadoc {
 
 task runHello (type: JavaExec, dependsOn: classes){
     classpath = sourceSets.main.runtimeClasspath
-    main = "org.cooperengine.examples.simple.HelloWorldTestApplication"
+    main = "org.copperengine.examples.simple.HelloWorldTestApplication"
 }

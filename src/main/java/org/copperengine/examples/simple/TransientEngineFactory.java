@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cooperengine.examples.simple;
+package org.copperengine.examples.simple;
 
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineIdProvider;
 import org.copperengine.core.EngineIdProviderBean;
-import org.copperengine.core.ProcessingEngine;
 import org.copperengine.core.common.DefaultProcessorPoolManager;
 import org.copperengine.core.common.DefaultTicketPoolManager;
 import org.copperengine.core.common.IdFactory;
@@ -43,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Convenience class for easy creation of a transient {@link ProcessingEngine}. Override the corresponding create
+ * Convenience class for easy creation of a transient {@link org.copperengine.core.ProcessingEngine}. Override the corresponding create
  * methods
  * to adapt the created engine.
  */

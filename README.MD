@@ -2,6 +2,7 @@ cooper-starter
 ==============
 
 A quickstarter example project for cooper-engine.
+[copper engine](https://github.com/copper-engine/copper-engine)
 
 Features of copper-engine:
 ---------------------------
@@ -11,7 +12,7 @@ Features of copper-engine:
 * Workflow-Files with version attributes to support old long running jobs
 * Workflow with typesafe RequestData and Response object.
 * Workflows can be updated at runtime (by changing the source files)
-
+* Breakpoints in Workflow-files works fine fpr debugging
 
 What you need to have:
 ----------------------
@@ -26,11 +27,5 @@ What you need to know:
 
 Injecting Services into workflow
 --------------------------------
-
 * Spring
 * Pojo
-
-Todo
------
-* asm 3.3 dependency duplicate
-* gradle run task

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cooperengine.examples.simple;
+package org.copperengine.examples.simple;
 
 import org.copperengine.core.CopperException;
 import org.copperengine.core.tranzient.TransientScottyEngine;
@@ -25,7 +25,7 @@ import java.io.File;
 public final class HelloWorldTestApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldTestApplication.class);
-    private static int NUMBER_OF_WORKFLOWS = 5000;
+    private static int NUMBER_OF_WORKFLOWS = 100000;
 
     private TransientScottyEngine engine;
 
