@@ -199,5 +199,5 @@ task runService (type: JavaExec, dependsOn: classes){
 task sendMessage (type: JavaExec, dependsOn: classes){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient"
-    args = "http://localhost:9090/orchestration?wsdl 491716677889 sc00p"
+    args = ["http://localhost:9090/orchestration?wsdl","491716677889","sc00p"]
 }
