@@ -57,7 +57,7 @@ eclipse {
         file {
             // add our code style settings to every eclipse project
             withProperties { properties ->
-                def codestyle = new XmlParser().parse(file("$rootDir/common/eclipse-codestyle.xml"))
+                def codestyle = new XmlParser().parse(file("$rootDir/config/eclipse-codestyle.xml"))
                 codestyle.profile[0].setting.each {
                     properties.put(it.'@id', it.'@value')
                 }
