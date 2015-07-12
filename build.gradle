@@ -122,7 +122,7 @@ dependencies {
     wsgen 'com.sun.xml.bind:jaxb-xjc:2.2.4-1'
 }
 
-tasks.create(name: "gen_wsbindings") {
+task("gen_wsbindings") {
     ext.genDirName = "$projectDir/src/main/generated";
 
     inputs.dir file(sourceSets.schema.srcDir)
