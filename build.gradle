@@ -18,24 +18,6 @@ compileTestJava.sourceCompatibility = JavaVersion.VERSION_1_6
 compileTestJava.targetCompatibility = JavaVersion.VERSION_1_6
 
 
-apply plugin: 'findbugs'
-findbugs {
-    sourceSets = [project.sourceSets.main] // check only main classes, neither tests nor example workflow classes
-    excludeFilter = file("$rootDir/common/findbugs-exclude-filter.xml")
-    effort = "max"
-    ignoreFailures = true
-}
-
-tasks.withType(FindBugs) {
-    reports {
-        // Unfortunately FindBugs cannot emit both XML and HTML report simultanously, so by default we emit HTML only.
-        // We emit XML only when -PfindbugsXmlReportEnabled=true, e.g. during Jenkins build
-        def findbugsXmlReportEnabled = project.hasProperty('findbugsXmlReportEnabled') && project.property('findbugsXmlReportEnabled')
-        xml.enabled = findbugsXmlReportEnabled
-        html.enabled = !findbugsXmlReportEnabled
-    }
-}
-
 apply plugin: 'eclipse'
 eclipse {
     classpath {
