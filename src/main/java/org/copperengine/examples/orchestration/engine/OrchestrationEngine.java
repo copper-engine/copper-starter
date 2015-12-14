@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.copperengine.examples.orchestration.simulators.servers;
+package org.copperengine.examples.orchestration.engine;
 
-import javax.xml.ws.Endpoint;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ServiceSimulatorMain {
+public class OrchestrationEngine {
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("Starting Server");
-        Endpoint.publish("http://localhost:9092/services/NetworkServiceProvider", new NetworkServiceProviderImpl());
-        Endpoint.publish("http://localhost:9092/services/CustomerService", new CustomerServiceImpl());
-        Thread.sleep(Long.MAX_VALUE);
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("orchestration/copperContext.xml");
+        ctx.registerShutdownHook();
     }
 
 }

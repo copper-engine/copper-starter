@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.copperengine.examples.orchestration;
+package org.copperengine.examples.orchestration.enginemon;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Main {
+public class OrchestrationEngineWithMonitoring {
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("OrchestrationEngineContext.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("orchestrationWithMonitoring/jetty.xml");
         ctx.registerShutdownHook();
     }
 

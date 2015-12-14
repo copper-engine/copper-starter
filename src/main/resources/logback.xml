@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!--
+    <contextName>AMK-engine</contextName>
+    <jmxConfigurator />
+-->
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="CONSOLE">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%d %5p %c{0}:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
