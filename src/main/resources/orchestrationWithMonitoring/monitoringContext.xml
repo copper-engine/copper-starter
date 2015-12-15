@@ -26,7 +26,7 @@
 
     <bean id="monitoringDataStorage" class="org.copperengine.monitoring.core.data.MonitoringDataStorage">
         <!-- tempDirPrefix --><constructor-arg type="java.lang.String"><value>logs/monitoring</value></constructor-arg>
-        <!-- maxTotalSize --><constructor-arg type="long"><value>10000000</value></constructor-arg>
+        <!-- maxTotalSize --><constructor-arg type="long"><value>100000000</value></constructor-arg>
         <!-- daysToKeep --><constructor-arg type="long"><value>7</value></constructor-arg>
     </bean>
 

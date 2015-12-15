@@ -143,6 +143,12 @@ task sendMessage (type: JavaExec, dependsOn: classes){
     args = ["http://localhost:9090/services/orchestration?wsdl","491716677889","sc00p"]
 }
 
+task fireMessages (type: JavaExec, dependsOn: classes){
+    classpath = sourceSets.main.runtimeClasspath
+    main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceLoadTestClient"
+    args = ["http://localhost:9090/services/orchestration?wsdl"]
+}
+
 // be sure to always regenerate eclipse files, because default behavior is merging into existing files
 tasks.eclipse.dependsOn cleanEclipse
 
