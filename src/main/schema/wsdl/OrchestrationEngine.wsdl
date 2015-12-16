@@ -54,7 +54,7 @@
 	</wsdl:binding>
 	<wsdl:service name="OrchestrationService">
 		<wsdl:port name="OrchestrationServicePort" binding="tns:OrchestrationServiceSoapBinding">
-			<soap:address location="http://localhost:9090/OrchestrationServicePort" />
+			<soap:address location="http://localhost:9090/services/OrchestrationServicePort" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

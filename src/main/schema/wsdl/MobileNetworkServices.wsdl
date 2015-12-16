@@ -135,13 +135,13 @@
 	
 	<wsdl:service name="NetworkServiceProviderService">
 		<wsdl:port name="NetworkServiceProviderPort" binding="tns:NetworkServiceProviderSoapBinding">
-			<soap:address location="http://localhost:9091/NetworkServiceProvider" />
+			<soap:address location="http://localhost:9091/services/NetworkServiceProvider" />
 		</wsdl:port>
 	</wsdl:service>
 	
 	<wsdl:service name="AsyncNetworkServiceResponseReceiverService">
 		<wsdl:port name="AsyncNetworkServiceResponseReceiver" binding="tns:AsyncNetworkServiceResponseReceiverSoapBinding">
-			<soap:address location="http://localhost:9092/AsyncNetworkServiceResponseReceiver" />
+			<soap:address location="http://localhost:9092/services/AsyncNetworkServiceResponseReceiver" />
 		</wsdl:port>
 	</wsdl:service>
 	

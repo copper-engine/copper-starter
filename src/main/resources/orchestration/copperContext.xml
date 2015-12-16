@@ -112,7 +112,7 @@
 
 	<beans:bean id="networkServiceAdapter" class="org.copperengine.examples.orchestration.adapter.NetworkServiceAdapterImpl">
 		<beans:property name="engine" ref="persistent.engine"/>
-		<beans:property name="callbachURI" value="http://localhost:9090/asyncNetworkServiceResponseReceiver?wsdl"/>
+		<beans:property name="callbachURI" value="http://localhost:9090/services/asyncNetworkServiceResponseReceiver?wsdl"/>
 		<beans:property name="networkServiceProvider" ref="networkServiceProvider"/>
 	</beans:bean>
 	
@@ -120,19 +120,19 @@
 		<beans:property name="engine" ref="persistent.engine"/>
 	</beans:bean>
 
-	<jaxws:client id="customerService" serviceClass="org.copperengine.customerservice.CustomerService" address="http://localhost:9092/CustomerService?wsdl" wsdlLocation="classpath:wsdl/CustomerService.wsdl">
+	<jaxws:client id="customerService" serviceClass="org.copperengine.customerservice.CustomerService" address="http://localhost:9092/services/CustomerService?wsdl" wsdlLocation="classpath:wsdl/CustomerService.wsdl">
 		<jaxws:features>
 			<bean class="org.apache.cxf.feature.LoggingFeature" />
 		</jaxws:features>
 	</jaxws:client>
 
-	<jaxws:client id="networkServiceProvider" serviceClass="org.copperengine.network.mobile.services.NetworkServiceProvider" address="http://localhost:9092/NetworkServiceProvider?wsdl" wsdlLocation="classpath:wsdl/MobileNetworkServices.wsdl">
+	<jaxws:client id="networkServiceProvider" serviceClass="org.copperengine.network.mobile.services.NetworkServiceProvider" address="http://localhost:9092/services/NetworkServiceProvider?wsdl" wsdlLocation="classpath:wsdl/MobileNetworkServices.wsdl">
 		<jaxws:features>
 			<bean class="org.apache.cxf.feature.LoggingFeature" />
 		</jaxws:features>
 	</jaxws:client>
 
-    <jaxws:endpoint id="OrchestrationEndpoint" address="http://localhost:9090/orchestration">
+    <jaxws:endpoint id="OrchestrationEndpoint" address="http://localhost:9090/services/orchestration">
         <jaxws:implementor>
             <beans:ref bean="OrchestrationInputAdapter" />
         </jaxws:implementor>
@@ -144,7 +144,7 @@
         </jaxws:features>
     </jaxws:endpoint>     
     
-    <jaxws:endpoint id="AsyncNetworkServiceResponseReceiverEndpoint" address="http://localhost:9090/asyncNetworkServiceResponseReceiver">
+    <jaxws:endpoint id="AsyncNetworkServiceResponseReceiverEndpoint" address="http://localhost:9090/services/asyncNetworkServiceResponseReceiver">
         <jaxws:implementor>
             <beans:ref bean="networkServiceAdapter" />
         </jaxws:implementor>
