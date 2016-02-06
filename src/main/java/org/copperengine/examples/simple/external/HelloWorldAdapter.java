@@ -15,12 +15,12 @@
  */
 package org.copperengine.examples.simple.external;
 
+import java.util.LinkedHashMap;
+
 import org.copperengine.examples.simple.HelloWorldRequest;
 import org.copperengine.examples.simple.HelloWorldService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.LinkedHashMap;
 
 /**
  * The external Hello World Adapter.
@@ -40,7 +40,7 @@ public class HelloWorldAdapter {
      * in orchestration example we will replace this with Injection by spring, guice or self written.
      * @return
      */
-    public static HelloWorldAdapter get() {
+    public synchronized static HelloWorldAdapter get() {
         if (adapter == null) {
             adapter = new HelloWorldAdapter();
         }
@@ -57,7 +57,12 @@ public class HelloWorldAdapter {
      */
     public String asyncSendHelloWorld(final HelloWorldRequest request) {
 
-        final String correlationId = "ID" + count++;
+        final String correlationId;
+        // prevent race condition
+        synchronized (HelloWorldAdapter.class) {
+            correlationId = "ID" + count++;
+        }
+
         data.put(correlationId, request);
         runThread(correlationId);
         return correlationId;
@@ -78,7 +83,7 @@ public class HelloWorldAdapter {
                     return;
                 }
 
-                String answer = "Hello " + request.getSenderName() + "!";
+                String answer = "Answer " + request.getSenderName() + "!";
                 HelloWorldService.get().sendResponse(correlationId, true, answer);
             }
         });
