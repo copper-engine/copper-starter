@@ -15,7 +15,7 @@
  */
 package org.copperengine.examples.simple.external;
 
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.copperengine.examples.simple.HelloWorldRequest;
 import org.copperengine.examples.simple.HelloWorldService;
@@ -31,7 +31,7 @@ public class HelloWorldAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldAdapter.class);
 
-    private static LinkedHashMap<String, HelloWorldRequest> data = new LinkedHashMap<String, HelloWorldRequest>();
+    private static ConcurrentHashMap<String, HelloWorldRequest> data = new ConcurrentHashMap<String, HelloWorldRequest>();
     private static HelloWorldAdapter adapter;
     int count = 0;
 
