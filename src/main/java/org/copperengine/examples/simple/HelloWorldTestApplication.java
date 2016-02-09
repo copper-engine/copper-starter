@@ -15,17 +15,17 @@
  */
 package org.copperengine.examples.simple;
 
+import java.io.File;
+
 import org.copperengine.core.CopperException;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-
 public final class HelloWorldTestApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorldTestApplication.class);
-    private static int NUMBER_OF_WORKFLOWS = 100000;
+    private static int NUMBER_OF_WORKFLOWS = 5000;
 
     private TransientScottyEngine engine;
 
@@ -36,7 +36,7 @@ public final class HelloWorldTestApplication {
         new HelloWorldTestApplication().run();
     }
 
-    private void run() {
+    private void run() throws InterruptedException {
 
         // initialize the procession engine the default configuration and source directory for the workflow files
         TransientEngineFactory factory = new TransientEngineFactory() {
@@ -55,12 +55,20 @@ public final class HelloWorldTestApplication {
         //start 5000 workflows with request data
         for (int i = 0; i < NUMBER_OF_WORKFLOWS; i++) {
             try {
+                // Question: why not return the wfinstance id in the run(...) method?
+                // String wfId = engine.run("HelloWorldWorkFlow", getNewData());
+                // logger.info("Process HelloWorldWorkFlow running with id="+wfId);
                 engine.run("HelloWorldWorkFlow", getNewData());
             } catch (CopperException e) {
                 logger.error("copper error: ", e);
             }
         }
 
+        // wait for all workflow instances to finish
+        for (; engine.getNumberOfWorkflowInstances() > 0;) {
+            logger.info(engine.getNumberOfWorkflowInstances() + " wf remaining..");
+            Thread.sleep(100);
+        }
         engine.shutdown();
     }
 
