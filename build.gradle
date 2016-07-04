@@ -41,14 +41,14 @@ sourceSets {
 }
 sourceSets.main.resources.srcDirs += sourceSets.schema.srcDir
 dependencies {
-    compile 'org.copper-engine:copper-coreengine:4.0+'
-    compile 'org.copper-engine:copper-jmx-interface:4.0+'
-    compile 'org.copper-engine:copper-spring:4.0+'
-    compile 'org.copper-engine:copper-monitoring-core:4.0+'
-    compile('org.copper-engine:copper-monitoring-server:4.0+') {
+    compile 'org.copper-engine:copper-coreengine:4.1+'
+    compile 'org.copper-engine:copper-jmx-interface:4.1+'
+    compile 'org.copper-engine:copper-spring:4.1+'
+    compile 'org.copper-engine:copper-monitoring-core:4.1+'
+    compile('org.copper-engine:copper-monitoring-server:4.1+') {
         exclude module: 'log4j'
     }
-    compile('org.copper-engine:copper-monitoring-client:4.0+') {
+    compile('org.copper-engine:copper-monitoring-client:4.1+') {
         exclude module: 'slf4j-log4j12'
         exclude module: 'log4j'
     }
