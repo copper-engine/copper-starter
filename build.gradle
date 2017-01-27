@@ -13,6 +13,7 @@ repositories {
 
 ext {
     apacheCxfVersion = '3.0.5'
+    copperVersion = '4.3.0-alpha1'
 }
 
 
@@ -40,18 +41,11 @@ sourceSets {
     }
 }
 sourceSets.main.resources.srcDirs += sourceSets.schema.srcDir
+
 dependencies {
-    compile 'org.copper-engine:copper-coreengine:4.2.0'
-    compile 'org.copper-engine:copper-jmx-interface:4.2.0'
-    compile 'org.copper-engine:copper-spring:4.2.0'
-    compile 'org.copper-engine:copper-monitoring-core:4.2.0'
-    compile('org.copper-engine:copper-monitoring-server:4.2.0') {
-        exclude module: 'log4j'
-    }
-    compile('org.copper-engine:copper-monitoring-client:4.2.0') {
-        exclude module: 'slf4j-log4j12'
-        exclude module: 'log4j'
-    }
+    compile "org.copper-engine:copper-coreengine:$copperVersion"
+    compile "org.copper-engine:copper-jmx-interface:$copperVersion"
+    compile "org.copper-engine:copper-spring:$copperVersion"
     
     compile("org.apache.cxf:cxf-rt-transports-http-jetty:$apacheCxfVersion") {
         exclude module: 'spring-web'
@@ -60,6 +54,8 @@ dependencies {
         exclude module: 'spring-web'
     }
     compile 'org.eclipse.jetty:jetty-server:8.+'
+    runtime 'org.apache.derby:derby:10.13.1.1'
+    runtime "org.slf4j:slf4j-log4j12:1.7.21"
 
     wsgen "org.apache.cxf:cxf-tools-wsdlto-core:$apacheCxfVersion"
     wsgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$apacheCxfVersion"

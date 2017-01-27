@@ -12,10 +12,10 @@ Features of copper-engine:
 * Workflow-Files with version attributes to support old long running jobs
 * Workflow with typesafe RequestData and Response object.
 * Workflows can be updated at runtime (by changing the source files)
-* Breakpoints in Workflow-files works fine fpr debugging
+* Breakpoints in Workflow-files works fine for debugging
 
 What you need to have:
 ----------------------
-* Java JDK 1.6+
+* Java JDK 1.7+
 * gradle 2.0+
 * Java IDE Eclipse or intellij IDEA or terminal 
