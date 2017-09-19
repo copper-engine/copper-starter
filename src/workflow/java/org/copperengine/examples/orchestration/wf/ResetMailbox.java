@@ -15,11 +15,14 @@
  */
 package org.copperengine.examples.orchestration.wf;
 
+import java.util.Date;
+
 import org.copperengine.core.AutoWire;
 import org.copperengine.core.Interrupt;
 import org.copperengine.core.Response;
 import org.copperengine.core.WaitMode;
 import org.copperengine.core.WorkflowDescription;
+import org.copperengine.core.audit.AuditTrail;
 import org.copperengine.core.persistent.PersistentWorkflow;
 import org.copperengine.customerservice.CustomerService;
 import org.copperengine.customerservice.GetCustomersByMsisdnRequest;
@@ -39,6 +42,12 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
     private transient CustomerService customerService;
     private transient NetworkServiceAdapter networkServiceAdapter;
+    private transient AuditTrail auditTrail;
+    
+    @AutoWire
+    public void setAuditTrail(AuditTrail auditTrail) {
+        this.auditTrail = auditTrail;
+    }
 
     @AutoWire
     public void setCustomerService(CustomerService customerService) {
@@ -53,6 +62,8 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     @Override
     public void main() throws Interrupt {
         logger.info("workflow instance started");
+        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+
         if (!checkSecretOK()) {
             sendSms("Authentication failed");
         } else {
