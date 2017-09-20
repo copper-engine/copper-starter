@@ -102,9 +102,6 @@
 	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton" init-method="startup">
 		<property name="batcher" ref="batcher"/>
 		<property name="dataSource" ref="datasource_default"/>
-		<property name="messagePostProcessor">
-			<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
-		</property>
 	</bean>
 		
 	<bean class="org.copperengine.spring.JmxExporter" init-method="startup" destroy-method="shutdown"/>    
