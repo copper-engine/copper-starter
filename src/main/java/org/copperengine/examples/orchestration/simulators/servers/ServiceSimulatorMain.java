@@ -21,8 +21,8 @@ public class ServiceSimulatorMain {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting Server");
-        Endpoint.publish("http://localhost:9092/services/NetworkServiceProvider", new NetworkServiceProviderImpl());
-        Endpoint.publish("http://localhost:9092/services/CustomerService", new CustomerServiceImpl());
+        Endpoint.publish("http://localhost:9093/services/NetworkServiceProvider", new NetworkServiceProviderImpl());
+        Endpoint.publish("http://localhost:9093/services/CustomerService", new CustomerServiceImpl());
         Thread.sleep(Long.MAX_VALUE);
     }
 

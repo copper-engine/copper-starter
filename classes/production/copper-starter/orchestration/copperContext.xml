@@ -109,7 +109,7 @@
 
 	<beans:bean id="networkServiceAdapter" class="org.copperengine.examples.orchestration.adapter.NetworkServiceAdapterImpl">
 		<beans:property name="engine" ref="persistent.engine"/>
-		<beans:property name="callbachURI" value="http://localhost:9091/services/asyncNetworkServiceResponseReceiver?wsdl"/>
+		<beans:property name="callbachURI" value="http://localhost:9090/services/asyncNetworkServiceResponseReceiver?wsdl"/>
 		<beans:property name="networkServiceProvider" ref="networkServiceProvider"/>
 	</beans:bean>
 	
@@ -129,7 +129,7 @@
 		</jaxws:features>
 	</jaxws:client>
 
-    <jaxws:endpoint id="OrchestrationEndpoint" address="http://localhost:9091/services/orchestration">
+    <jaxws:endpoint id="OrchestrationEndpoint" address="http://localhost:9090/services/orchestration">
         <jaxws:implementor>
             <beans:ref bean="OrchestrationInputAdapter" />
         </jaxws:implementor>
@@ -141,7 +141,7 @@
         </jaxws:features>
     </jaxws:endpoint>     
     
-    <jaxws:endpoint id="AsyncNetworkServiceResponseReceiverEndpoint" address="http://localhost:9091/services/asyncNetworkServiceResponseReceiver">
+    <jaxws:endpoint id="AsyncNetworkServiceResponseReceiverEndpoint" address="http://localhost:9090/services/asyncNetworkServiceResponseReceiver">
         <jaxws:implementor>
             <beans:ref bean="networkServiceAdapter" />
         </jaxws:implementor>
