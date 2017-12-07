@@ -46,6 +46,14 @@ dependencies {
     compile "org.copper-engine:copper-coreengine:$copperVersion"
     compile "org.copper-engine:copper-jmx-interface:$copperVersion"
     compile "org.copper-engine:copper-spring:$copperVersion"
+    compile 'org.copper-engine:copper-monitoring-core:4.1+'
+    compile('org.copper-engine:copper-monitoring-server:4.1+') {
+        exclude module: 'log4j'
+    }
+    compile('org.copper-engine:copper-monitoring-client:4.1+') {
+        exclude module: 'slf4j-log4j12'
+        exclude module: 'log4j'
+    }
     
     compile("org.apache.cxf:cxf-rt-transports-http-jetty:$apacheCxfVersion") {
         exclude module: 'spring-web'
@@ -56,8 +64,8 @@ dependencies {
         exclude group: "asm", module: "asm"
     }
     compile 'org.eclipse.jetty:jetty-server:8.+'
-    runtime 'org.apache.derby:derby:10.13.1.1'
-    runtime "org.slf4j:slf4j-log4j12:1.7.21"
+//    runtime 'org.apache.derby:derby:10.13.1.1'
+//    runtime "org.slf4j:slf4j-log4j12:1.7.21"
 
     wsgen "org.apache.cxf:cxf-tools-wsdlto-core:$apacheCxfVersion"
     wsgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$apacheCxfVersion"
