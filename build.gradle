@@ -1,10 +1,9 @@
-import groovy.xml.QName
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+wrapper {
+    gradleVersion = '4.6'
+    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 }
 
 repositories {
@@ -30,7 +29,7 @@ sourceSets {
         ext.srcDir = "$projectDir/src/workflow/java"
     }
 }
-sourceSets.main.resources.srcDirs += sourceSets.workflow.srcDir
+sourceSets.main.java.srcDirs += sourceSets.workflow.srcDir
 configurations {
     wsgen
 }
@@ -74,7 +73,7 @@ dependencies {
     
 }
 
-task("gen_wsbindings") {
+tasks.create(name: "gen_wsbindings", group: 'build') {
     ext.genDirName = "$projectDir/src/main/generated";
 
     inputs.dir file(sourceSets.schema.srcDir)
@@ -123,33 +122,33 @@ javadoc {
 }
 
 
-task runHello (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'runHello', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.simple.HelloWorldTestApplication"
 }
 
-task runEngine (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'runEngine', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.engine.OrchestrationEngine"
 }
 
-task runEngineWithMonitoring (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'runEngineWithMonitoring', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.enginemon.OrchestrationEngineWithMonitoring"
 }
 
-task runService (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'runService', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.servers.ServiceSimulatorMain"
 }
 
-task sendMessage (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'sendMessage', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient"
     args = ["http://localhost:9091/services/orchestration?wsdl","491716677889","sc00p"]
 }
 
-task fireMessages (type: JavaExec, dependsOn: classes){
+tasks.create(name: 'fireMessages', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceLoadTestClient"
     args = ["http://localhost:9090/services/orchestration?wsdl"]
