@@ -1,0 +1,3 @@
+*/5 * * * * root genBrokenWF >> /var/log/cron.log 2>&1
+
+
