@@ -17,11 +17,11 @@ ext {
 
 
 compileJava.options.encoding = 'utf-8'
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_7
-compileJava.targetCompatibility = JavaVersion.VERSION_1_7
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 compileTestJava.options.encoding = 'utf-8'
-compileTestJava.sourceCompatibility = JavaVersion.VERSION_1_7
-compileTestJava.targetCompatibility = JavaVersion.VERSION_1_7
+compileTestJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileTestJava.targetCompatibility = JavaVersion.VERSION_1_8
 
 
 sourceSets {
