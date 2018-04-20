@@ -9,4 +9,5 @@ fi
 echo $COP_STARTER_VERSION
 echo "port: $PORT"
 
-java -cp /app/copper-starter/lib/copper-starter.jar org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient "http://localhost:$PORT/services/orchestration?wsdl" "491716677889" "sc00p" "2"
+#java -cp /app/copper-starter/lib/copper-starter.jar org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient "http://localhost:$PORT/services/orchestration?wsdl" "491716677889" "sc00p" "2"
+java -cp /app/copper-starter/lib/copper-starter.jar org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient
