@@ -17,7 +17,6 @@ RUN unzip copper-starter.zip
 WORKDIR /app/copper-starter
 EXPOSE 1099
 
-
 ENV COPPER_STARTER_OPTS "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false"
 
 CMD cron && ./bin/copper-starter

@@ -1,3 +1,1 @@
-*/5 * * * * root `printenv | sed 's/^\(.*\)$/export \1/g' | grep 'COP_STARTER_VERSION'`; genBrokenWF >> /var/log/cron.log 2>&1
-
-
+*/5 * * * * root genBrokenWF >> /var/log/cron.log 2>&1
