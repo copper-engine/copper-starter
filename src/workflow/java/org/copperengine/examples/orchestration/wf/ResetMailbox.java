@@ -15,8 +15,6 @@
  */
 package org.copperengine.examples.orchestration.wf;
 
-import java.util.Date;
-
 import org.copperengine.core.AutoWire;
 import org.copperengine.core.Interrupt;
 import org.copperengine.core.Response;
@@ -62,7 +60,16 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     @Override
     public void main() throws Interrupt {
         logger.info("workflow instance started");
-        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+//        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+
+        try {
+            //Simulate RUNNING state of workflow for 30 seconds
+            Thread.sleep(30_000);
+        } catch (java.lang.InterruptedException ex) {}
+
+
+        //Simulate WAITING state of workflow for 3 minutes
+        sleep(180);
 
         if (!checkSecretOK()) {
             sendSms("Authentication failed");

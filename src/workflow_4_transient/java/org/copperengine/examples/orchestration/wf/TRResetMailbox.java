@@ -33,12 +33,12 @@ import org.copperengine.examples.orchestration.data.ResetMailboxData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WorkflowDescription(alias = ResetMailboxDef.NAME, majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
-public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
+@WorkflowDescription(alias = "TRResetMailbox", majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
+public class TRResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(ResetMailbox.class);
+    private static final Logger logger = LoggerFactory.getLogger(TRResetMailbox.class);
 
     private transient CustomerService customerService;
     private transient NetworkServiceAdapter networkServiceAdapter;
@@ -62,8 +62,8 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     @Override
     public void main() throws Interrupt {
         logger.info("workflow instance started");
-        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
-
+//        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+        this.sleep(100);
         if (!checkSecretOK()) {
             sendSms("Authentication failed");
         } else {
@@ -88,7 +88,7 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
                 logger.error("checkSecretOK failed", e);
             }
             if (i < 5) {
-                sleep(30);
+                sleep(3000);
             } else {
                 break;
             }

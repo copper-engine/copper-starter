@@ -24,22 +24,18 @@ import org.copperengine.examples.simple.external.HelloWorldAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.stream.IntStream;
-
-@WorkflowDescription(alias = "HelloWorldWorkFlow", majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
-public class HelloWorldWorkFlow extends Workflow<HelloWorldRequest> {
+@WorkflowDescription(alias = "TRHelloWorldWorkFlow", majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
+public class TRHelloWorldWorkFlow extends Workflow<HelloWorldRequest> {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(HelloWorldWorkFlow.class);
+    private static final Logger logger = LoggerFactory.getLogger(TRHelloWorldWorkFlow.class);
 
     @Override
     public void main() throws Interrupt {
         final String correlationId = HelloWorldAdapter.get().asyncSendHelloWorld(getData());
         logger.info(correlationId + ": workflow    break: Hello World!");
         //        logger.info(correlationId+ ": workflow   part one: Hello World!");
-
-//        IntStream.range(1, 10_000_000).forEach(System.out::println);
 
         wait(WaitMode.ALL, 5 * 60 * 60 * 1000, correlationId);
         final Response<HelloWorldResponse> response = getAndRemoveResponse(correlationId);

@@ -29,15 +29,33 @@ public final class OrchestrationServiceTestClient {
     private OrchestrationServiceTestClient() {
     }
 
-    public static void main(String args[]) throws java.lang.Exception {
-        URL wsdlURL = new URL(args[0]);
+    public static void main(String args[]) throws java.lang.Exception{
+        URL wsdlURL = new URL("http://localhost:" +
+                ("V2".equals(System.getenv("COP_STARTER_VERSION")) ? "9093" : "9092" ) + "/services/orchestration?wsdl");
+        String resetMailbox_msisdn = "491716677889";
+        String resetMailbox_secret = "sc00p";
+        int times = 2;
 
-        OrchestrationService_Service ss = new OrchestrationService_Service(wsdlURL, SERVICE_NAME);
-        OrchestrationService port = ss.getOrchestrationServicePort();
+        if (args.length >= 3) {
+            wsdlURL = new URL(args[0]);
+            resetMailbox_msisdn = args[1];
+            resetMailbox_secret = args[2];
+        }
+        if (args.length >= 4 && args[3] != null ) {
+            times = Integer.valueOf(args[3]);
+        }
 
-        String resetMailbox_msisdn = args[1];
-        String resetMailbox_secret = args[2];
-        port.resetMailbox(resetMailbox_msisdn, resetMailbox_secret);
+
+        System.out.println("Will simulate " + times + " broken workflows");
+        for(int i = 0; i< times; i++) {
+
+            OrchestrationService_Service ss = new OrchestrationService_Service(wsdlURL, SERVICE_NAME);
+            OrchestrationService port = ss.getOrchestrationServicePort();
+
+            port.resetMailbox(resetMailbox_msisdn, resetMailbox_secret);
+        }
+
+        System.out.println("Done");
     }
 
 }

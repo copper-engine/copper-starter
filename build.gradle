@@ -13,6 +13,7 @@ repositories {
 ext {
     apacheCxfVersion = '3.0.5'
     copperVersion = '4.3.0-alpha1'
+    springVersion = '5.0.5.RELEASE'
 }
 
 
@@ -52,6 +53,17 @@ dependencies {
     compile('org.copper-engine:copper-monitoring-client:4.1+') {
         exclude module: 'slf4j-log4j12'
         exclude module: 'log4j'
+    }
+
+    compile "org.springframework:spring-aop:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-expression:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile("org.springframework:spring-asm:3.1.4") {
+        exclude group: "asm", module: "asm"
     }
     
     compile("org.apache.cxf:cxf-rt-transports-http-jetty:$apacheCxfVersion") {

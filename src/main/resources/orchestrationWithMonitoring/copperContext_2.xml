@@ -47,7 +47,8 @@
     </bean>
 
 	<bean id="datasource_default" class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40">
-    	<property name="databaseName" value="./build/copperExampleDB;create=true"/>
+    	<property name="databaseName" value="./build/copperExampleDB_v2;create=true"/>
+    	<!--<property name="databaseName" value="./build/copperExampleDB;create=true"/>-->
 	</bean>
 	
 	<bean id="dbDialect" class="org.copperengine.core.persistent.DerbyDbDialect" scope="singleton" init-method="startup">
@@ -59,18 +60,6 @@
 	<bean id="persistent.dbStorage" class="org.copperengine.core.persistent.ScottyDBStorage" scope="singleton">
 		<property name="transactionController" ref="txnController"/>
 		<property name="dialect" ref="dbDialect"/>
-		<property name="batcher" ref="batcher"/>
-		<property name="checkDbConsistencyAtStartup" value="true"/>
-	</bean>
-	<bean id="dbDialect1" class="org.copperengine.core.persistent.DerbyDbDialect" scope="singleton" init-method="startup">
-		<property name="wfRepository" ref="wfRepository_trans"/>
-		<property name="runtimeStatisticsCollector" ref="statisticsCollector"/>
-		<property name="dataSource" ref="datasource_default"/>
-	</bean>
-
-	<bean id="persistent.dbStorage1" class="org.copperengine.core.persistent.ScottyDBStorage" scope="singleton">
-		<property name="transactionController" ref="txnController"/>
-		<property name="dialect" ref="dbDialect1"/>
 		<property name="batcher" ref="batcher"/>
 		<property name="checkDbConsistencyAtStartup" value="true"/>
 	</bean>
@@ -135,12 +124,14 @@
 	</bean>
 
     <bean id="dependencyInjector" class="org.copperengine.spring.SpringDependencyInjector"/>
+	
 
-	<!--<bean  id="timeoutManager" class="org.copperengine.core.tranzient.DefaultTimeoutManager">-->
-		<!--<property name="engine" ref="transient.engine"> </property>-->
-	<!--</bean>-->
-	<!--<bean  id="earlyResponseContainer" class="org.copperengine.core.tranzient.DefaultEarlyResponseContainer"/>-->
-	<!--<bean  id="ticketPoolManager" class="org.copperengine.core.common.DefaultTicketPoolManager"/>-->
+
+	<bean  id="timeoutManager" class="org.copperengine.core.tranzient.DefaultTimeoutManager">
+		<property name="engine" ref="transient.engine"> </property>
+	</bean>
+	<bean  id="earlyResponseContainer" class="org.copperengine.core.tranzient.DefaultEarlyResponseContainer"/>
+	<bean  id="ticketPoolManager" class="org.copperengine.core.common.DefaultTicketPoolManager"/>
 
 	<bean  id="engineIdProvider.reciprocating" class="org.copperengine.core.EngineIdProviderBean">
 		<property name="engineId" value="Reciprocating"/>
@@ -155,20 +146,20 @@
 		<property name="engineId" value="Naturally"/>
 	</bean>
 
-	<!--<bean id="transient.engine" class="org.copperengine.core.tranzient.TransientScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">-->
-		<!--<property name="idFactory">-->
-			<!--<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>-->
-		<!--</property>-->
-		<!--<property name="engineIdProvider" ref="engineIdProvider.naturally"/>-->
-		<!--<property name="poolManager" ref="persistent.PPManager2"/>-->
-		<!--<property name="timeoutManager" ref="timeoutManager"/>-->
-		<!--<property name="ticketPoolManager" ref="ticketPoolManager"/>-->
-		<!--<property name="earlyResponseContainer" ref="earlyResponseContainer"/>-->
-		<!--<property name="dependencyInjector" ref="dependencyInjector"/>-->
-		<!--&lt;!&ndash;<property name="serializer" ref="serializer"/>&ndash;&gt;-->
-		<!--<property name="wfRepository" ref="wfRepository"/>-->
-    	<!--<property name="statisticsCollector" ref="statisticsCollector"/>-->
-	<!--</bean>-->
+	<bean id="transient.engine" class="org.copperengine.core.tranzient.TransientScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">
+		<property name="idFactory">
+			<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>
+		</property>
+		<property name="engineIdProvider" ref="engineIdProvider.naturally"/>
+		<property name="poolManager" ref="persistent.PPManager2"/>
+		<property name="timeoutManager" ref="timeoutManager"/>
+		<property name="ticketPoolManager" ref="ticketPoolManager"/>
+		<property name="earlyResponseContainer" ref="earlyResponseContainer"/>
+		<property name="dependencyInjector" ref="dependencyInjector"/>
+		<!--<property name="serializer" ref="serializer"/>-->
+		<property name="wfRepository" ref="wfRepository_trans"/>
+    	<property name="statisticsCollector" ref="statisticsCollector"/>
+	</bean>
 
 	<bean  id="earlyResponseContainer1" class="org.copperengine.core.tranzient.DefaultEarlyResponseContainer">
 	</bean>
@@ -179,7 +170,6 @@
 		<property name="idFactory">
 			<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>
 		</property>
-		<property name="engineIdProvider" ref="engineIdProvider.spark"/>
 		<property name="processorPoolManager" ref="persistent.PPManager"/>
 		<property name="dependencyInjector" ref="dependencyInjector"/>
 		<property name="dbStorage" ref="persistent.dbStorage"/>
@@ -188,20 +178,19 @@
 		<property name="statisticsCollector" ref="statisticsCollector"/>
 	</bean>
 
-	<bean id="persistent.engine3" class="org.copperengine.core.persistent.PersistentScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">
+	<bean id="persistent.engine2" class="org.copperengine.core.persistent.PersistentScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">
 		<property name="idFactory">
 			<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>
 		</property>
-		<property name="engineIdProvider" ref="engineIdProvider.wanker"/>
+		<property name="engineIdProvider" ref="engineIdProvider.reciprocating"/>
 		<property name="engineClusterId" value="Nautilus"/>
-		<property name="processorPoolManager" ref="persistent.PPManager3"/>
+		<property name="processorPoolManager" ref="persistent.PPManager"/>
 		<property name="dependencyInjector" ref="dependencyInjector"/>
 		<property name="dbStorage" ref="persistent.dbStorage"/>
 		<!--<property name="serializer" ref="serializer"/>-->
 		<property name="wfRepository" ref="wfRepository"/>
     	<property name="statisticsCollector" ref="statisticsCollector"/>
 	</bean>
-
 
 	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">
 		<property name="batcher" ref="batcher"/>

@@ -23,8 +23,16 @@ public class OrchestrationEngineWithMonitoring {
      * @param args
      */
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("orchestrationWithMonitoring/jetty.xml");
+        String context = "orchestrationWithMonitoring/jetty.xml";
+
+        if ("V2".equals(System.getenv("COP_STARTER_VERSION")) || (args.length > 0 && "V2".equals(args[0]))) {
+            context = "orchestrationWithMonitoring/jetty_2.xml";
+            System.out.println("Starting alternative version of orchestration\n");
+        }
+
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(context);
         ctx.registerShutdownHook();
+
     }
 
 }
