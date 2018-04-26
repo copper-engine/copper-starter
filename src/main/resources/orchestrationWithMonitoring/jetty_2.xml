@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="Server"
+          class="org.eclipse.jetty.server.Server" init-method="start" destroy-method="stop">
+        <property name="connectors">
+            <list>
+                <bean id="Connector" class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                    <property name="port" value="9092"/>
+                </bean>
+            </list>
+        </property>
+
+        <property name="handler">
+            <bean id="handlers"
+                  class="org.eclipse.jetty.server.handler.HandlerCollection">
+                <property name="handlers">
+                    <list>
+                        <bean id="contexts"
+                              class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+                            <property name="handlers">
+                                <list>
+                                    <bean class="org.eclipse.jetty.webapp.WebAppContext">
+                                        <property name="contextPath" value="/"/>
+                                        <property name="war" value="src/main/resources/orchestrationWithMonitoring/webapp_2">
+                                        </property>
+                                    </bean>
+                                </list>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
