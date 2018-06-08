@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
         serviceName = "NetworkServiceProviderService",
         portName = "NetworkServiceProviderPort",
         targetNamespace = "http://services.mobile.network.copperengine.org/",
-        wsdlLocation = "classpath:wsdl/MobileNetworkServices.wsdl",
+        // wsdlLocation = "/MobileNetworkServices.wsdl",
         endpointInterface = "org.copperengine.network.mobile.services.NetworkServiceProvider")
 public class NetworkServiceProviderImpl implements NetworkServiceProvider {
 
