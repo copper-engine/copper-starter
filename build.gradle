@@ -12,18 +12,18 @@ repositories {
 }
 
 ext {
-    apacheCxfVersion = '3.0.5'
-    copperVersion = '5.0.0-SNAPSHOT'
+    apacheCxfVersion = '3.2.1'
+    copperVersion = '5.0.0-alpha2'
     springVersion = '5.0.5.RELEASE'
 }
 
 
 compileJava.options.encoding = 'utf-8'
-compileJava.sourceCompatibility = JavaVersion.VERSION_1_7
-compileJava.targetCompatibility = JavaVersion.VERSION_1_7
+compileJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileJava.targetCompatibility = JavaVersion.VERSION_1_8
 compileTestJava.options.encoding = 'utf-8'
-compileTestJava.sourceCompatibility = JavaVersion.VERSION_1_7
-compileTestJava.targetCompatibility = JavaVersion.VERSION_1_7
+compileTestJava.sourceCompatibility = JavaVersion.VERSION_1_8
+compileTestJava.targetCompatibility = JavaVersion.VERSION_1_8
 
 
 sourceSets {
@@ -47,10 +47,7 @@ dependencies {
     compile "org.copper-engine:copper-coreengine:$copperVersion"
     compile "org.copper-engine:copper-jmx-interface:$copperVersion"
     compile "org.copper-engine:copper-spring:$copperVersion"
-//            {
-//        exclude module: 'slf4j-log4j12'
-//        exclude module: 'log4j'
-//    }
+
     compile 'org.copper-engine:copper-monitoring-core:4.1+'
     compile('org.copper-engine:copper-monitoring-server:4.1+') {
         exclude module: 'log4j'
@@ -70,7 +67,15 @@ dependencies {
 //    compile("org.springframework:spring-asm:3.1.4") {
 //        exclude group: "asm", module: "asm"
 //    }
-    
+
+    compile 'com.sun.activation:javax.activation:1.2.0'
+    compile 'javax.annotation:javax.annotation-api:1.3.2'
+    compile 'javax.xml.bind:jaxb-api:2.3.0'
+    compile('com.sun.xml.ws:jaxws-ri:2.3.0') {
+        exclude module: "jaxws-eclipselink-plugin"
+        exclude module: "sdo-eclipselink-plugin"
+    }
+
     compile("org.apache.cxf:cxf-rt-transports-http-jetty:$apacheCxfVersion") {
         exclude module: 'spring-web'
         exclude group: "asm", module: "asm"
@@ -80,18 +85,21 @@ dependencies {
         exclude group: "asm", module: "asm"
     }
     compile 'org.eclipse.jetty:jetty-server:8.+'
-//    compile 'org.apache.derby:derby:10.9.1.0'
-    // https://mvnrepository.com/artifact/org.apache.derby/derby
-//    testCompile group: 'org.apache.derby', name: 'derby', version: '10.9.1.0'
-
-//    runtime 'org.apache.derby:derby:10.13.1.1'
-//    runtime "org.slf4j:slf4j-log4j12:1.7.21"
+    runtime 'org.apache.derby:derby:10.13.1.1'
+    runtime "org.slf4j:slf4j-log4j12:1.7.21"
 
     wsgen "org.apache.cxf:cxf-tools-wsdlto-core:$apacheCxfVersion"
     wsgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$apacheCxfVersion"
     wsgen "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:$apacheCxfVersion"
     wsgen "org.apache.cxf.xjcplugins:cxf-xjc-ts:$apacheCxfVersion"
-    
+
+    wsgen 'com.sun.activation:javax.activation:1.2.0'
+    wsgen 'javax.annotation:javax.annotation-api:1.3.2'
+    wsgen 'javax.xml.bind:jaxb-api:2.3.0'
+    wsgen('com.sun.xml.ws:jaxws-ri:2.3.0') {
+        exclude module: "jaxws-eclipselink-plugin"
+        exclude module: "sdo-eclipselink-plugin"
+    }
 }
 
 tasks.create(name: "gen_wsbindings", group: 'build') {
@@ -112,7 +120,7 @@ tasks.create(name: "gen_wsbindings", group: 'build') {
                     // Add -DexitOnFinish=true so that WSDLToJava bails out with exit code 0 (on success) or 1 (on failure)
                     // so that the build aborts immediately on errors. If you don't set this property, the exit code is always 0.
                     systemProperty 'exitOnFinish', 'true'
-                    jvmArgs = ['-Djavax.xml.accessExternalSchema=all']
+                    jvmArgs = ['-Djavax.xml.accessExternalSchema=all', '-Duser.language=en']
                     args = ['-frontend', 'jaxws21',
                             '-db', 'jaxb',
                             '-xjc-extension',
@@ -129,25 +137,6 @@ sourceSets.main.java.srcDirs += gen_wsbindings.genDirName
 compileJava.dependsOn gen_wsbindings
 eclipseClasspath.dependsOn gen_wsbindings
 
-
-apply plugin: 'application'
-mainClassName = "org.copperengine.examples.orchestration.enginemon.OrchestrationEngineWithMonitoring"
-
-distZip {
-    into(project.name) {
-        from '.'
-        include 'src/main/resources/**/*'
-    }
-    into(project.name) {
-        from '.'
-        include "src/workflow/java/**/*"
-    }
-    into(project.name) {
-        from '.'
-        include "src/workflow_4_transient/java/**/*"
-    }
-
-}
 
 clean {
     delete "$projectDir/src/main/generated"
@@ -185,7 +174,7 @@ tasks.create(name: 'runService', type: JavaExec, dependsOn: classes, group: 'run
 tasks.create(name: 'sendMessage', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient"
-    args = ["http://localhost:9092/services/orchestration?wsdl","491716677889","sc00p"]
+    args = ["http://localhost:9090/services/orchestration?wsdl","491716677889","sc00p"]
 }
 
 tasks.create(name: 'fireMessages', type: JavaExec, dependsOn: classes, group: 'run'){

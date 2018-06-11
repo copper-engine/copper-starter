@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
         serviceName = "CustomerServiceService",
         portName = "CustomerServicePort",
         targetNamespace = "http://customerservice.copperengine.org/",
-        wsdlLocation = "classpath:wsdl/CustomerService.wsdl",
+        // wsdlLocation = "/CustomerService.wsdl",
         endpointInterface = "org.copperengine.customerservice.CustomerService")
 public class CustomerServiceImpl implements CustomerService {
 

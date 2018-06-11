@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
         serviceName = "OrchestrationService",
         portName = "OrchestrationServicePort",
         targetNamespace = "http://orchestration.copperengine.org/",
-        wsdlLocation = "classpath:wsdl/OrchestrationEngine.wsdl",
+        // wsdlLocation = "/OrchestrationEngine.wsdl",
         endpointInterface = "org.copperengine.orchestration.OrchestrationService")
 public class OrchestrationInputAdapter implements OrchestrationService {
 
