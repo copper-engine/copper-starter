@@ -7,12 +7,13 @@ wrapper {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 ext {
     apacheCxfVersion = '3.0.5'
-    copperVersion = '4.3.0-alpha1'
+    copperVersion = '5.0.0-SNAPSHOT'
     springVersion = '5.0.5.RELEASE'
 }
 
@@ -46,6 +47,10 @@ dependencies {
     compile "org.copper-engine:copper-coreengine:$copperVersion"
     compile "org.copper-engine:copper-jmx-interface:$copperVersion"
     compile "org.copper-engine:copper-spring:$copperVersion"
+//            {
+//        exclude module: 'slf4j-log4j12'
+//        exclude module: 'log4j'
+//    }
     compile 'org.copper-engine:copper-monitoring-core:4.1+'
     compile('org.copper-engine:copper-monitoring-server:4.1+') {
         exclude module: 'log4j'
@@ -62,9 +67,9 @@ dependencies {
     compile "org.springframework:spring-expression:$springVersion"
     compile "org.springframework:spring-jdbc:$springVersion"
     compile "org.springframework:spring-tx:$springVersion"
-    compile("org.springframework:spring-asm:3.1.4") {
-        exclude group: "asm", module: "asm"
-    }
+//    compile("org.springframework:spring-asm:3.1.4") {
+//        exclude group: "asm", module: "asm"
+//    }
     
     compile("org.apache.cxf:cxf-rt-transports-http-jetty:$apacheCxfVersion") {
         exclude module: 'spring-web'
@@ -75,6 +80,10 @@ dependencies {
         exclude group: "asm", module: "asm"
     }
     compile 'org.eclipse.jetty:jetty-server:8.+'
+//    compile 'org.apache.derby:derby:10.9.1.0'
+    // https://mvnrepository.com/artifact/org.apache.derby/derby
+//    testCompile group: 'org.apache.derby', name: 'derby', version: '10.9.1.0'
+
 //    runtime 'org.apache.derby:derby:10.13.1.1'
 //    runtime "org.slf4j:slf4j-log4j12:1.7.21"
 
@@ -121,6 +130,25 @@ compileJava.dependsOn gen_wsbindings
 eclipseClasspath.dependsOn gen_wsbindings
 
 
+apply plugin: 'application'
+mainClassName = "org.copperengine.examples.orchestration.enginemon.OrchestrationEngineWithMonitoring"
+
+distZip {
+    into(project.name) {
+        from '.'
+        include 'src/main/resources/**/*'
+    }
+    into(project.name) {
+        from '.'
+        include "src/workflow/java/**/*"
+    }
+    into(project.name) {
+        from '.'
+        include "src/workflow_4_transient/java/**/*"
+    }
+
+}
+
 clean {
     delete "$projectDir/src/main/generated"
 }
@@ -157,7 +185,7 @@ tasks.create(name: 'runService', type: JavaExec, dependsOn: classes, group: 'run
 tasks.create(name: 'sendMessage', type: JavaExec, dependsOn: classes, group: 'run'){
     classpath = sourceSets.main.runtimeClasspath
     main = "org.copperengine.examples.orchestration.simulators.clients.OrchestrationServiceTestClient"
-    args = ["http://localhost:9091/services/orchestration?wsdl","491716677889","sc00p"]
+    args = ["http://localhost:9092/services/orchestration?wsdl","491716677889","sc00p"]
 }
 
 tasks.create(name: 'fireMessages', type: JavaExec, dependsOn: classes, group: 'run'){

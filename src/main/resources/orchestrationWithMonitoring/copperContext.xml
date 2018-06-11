@@ -145,8 +145,8 @@
 	<bean  id="engineIdProvider.reciprocating" class="org.copperengine.core.EngineIdProviderBean">
 		<property name="engineId" value="Reciprocating"/>
 	</bean>
-	<bean  id="engineIdProvider.wanker" class="org.copperengine.core.EngineIdProviderBean">
-		<property name="engineId" value="Wanker"/>
+	<bean  id="engineIdProvider.inline" class="org.copperengine.core.EngineIdProviderBean">
+		<property name="engineId" value="In-line"/>
 	</bean>
 	<bean  id="engineIdProvider.spark" class="org.copperengine.core.EngineIdProviderBean">
 		<property name="engineId" value="Spark-ignition"/>
@@ -192,7 +192,7 @@
 		<property name="idFactory">
 			<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>
 		</property>
-		<property name="engineIdProvider" ref="engineIdProvider.wanker"/>
+		<property name="engineIdProvider" ref="engineIdProvider.inline"/>
 		<property name="engineClusterId" value="Nautilus"/>
 		<property name="processorPoolManager" ref="persistent.PPManager3"/>
 		<property name="dependencyInjector" ref="dependencyInjector"/>
@@ -203,12 +203,16 @@
 	</bean>
 
 
-	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">
+	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton" init-method="startup">
 		<property name="batcher" ref="batcher"/>
 		<property name="dataSource" ref="datasource_default"/>
 		<property name="messagePostProcessor">
 			<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
 		</property>
+	</bean>
+
+	<bean id="auditTrailQuery" class="org.copperengine.spring.audit.AuditTrailQueryEngine" scope="singleton">
+		<property name="dataSource" ref="datasource_default"/>
 	</bean>
 
 

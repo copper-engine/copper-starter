@@ -31,6 +31,8 @@ import org.copperengine.examples.orchestration.data.ResetMailboxData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 @WorkflowDescription(alias = ResetMailboxDef.NAME, majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
 public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
@@ -60,16 +62,17 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     @Override
     public void main() throws Interrupt {
         logger.info("workflow instance started");
-//        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
-
-        try {
-            //Simulate RUNNING state of workflow for 30 seconds
-            Thread.sleep(30_000);
-        } catch (java.lang.InterruptedException ex) {}
+        auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+//
+//        try {
+//            //Simulate RUNNING state of workflow for 30 seconds
+//            Thread.sleep(30_000);
+//        } catch (java.lang.InterruptedException ex) {}
 
 
         //Simulate WAITING state of workflow for 3 minutes
-        sleep(180);
+        sleep(30);
+//        sleep(180);
 
         if (!checkSecretOK()) {
             sendSms("Authentication failed");
