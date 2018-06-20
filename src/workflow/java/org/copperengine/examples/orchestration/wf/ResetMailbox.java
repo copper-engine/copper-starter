@@ -71,7 +71,7 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
 
         //Simulate WAITING state of workflow for 3 minutes
-        sleep(30);
+        sleep(5);
 //        sleep(180);
 
         if (!checkSecretOK()) {
@@ -97,8 +97,8 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
             } catch (Exception e) {
                 logger.error("checkSecretOK failed", e);
             }
-            if (i < 5) {
-                sleep(30);
+            if (i < 2) {
+                sleep(5);
             } else {
                 break;
             }
@@ -125,7 +125,7 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
                 logger.error("reset mailbox failed - max number of retries reached");
                 return false;
             }
-            sleep(30);
+            sleep(5);
         }
 
     }
