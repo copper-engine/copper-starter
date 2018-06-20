@@ -198,6 +198,10 @@
 	</bean>
 
 
+	<bean id="auditTrailQuery2" class="org.copperengine.spring.audit.AuditTrailQueryEngine" scope="singleton">
+		<property name="dataSource" ref="datasource_default"/>
+	</bean>
+
 	<!--<bean id="serializer" class="org.copperengine.ext.persistent.YamlSerializer"></bean>-->
 	<bean class="org.copperengine.spring.JmxExporter" init-method="startup" destroy-method="shutdown"/>    
 
