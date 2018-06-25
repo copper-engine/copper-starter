@@ -1,0 +1,344 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+
+       xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration
+            http://cxf.apache.org/schemas/configuration/http-conf.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd
+            http://cxf.apache.org/jaxws 
+            http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+
+    <import resource="monitoringOracleContext.xml" />
+        
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
+        <property name="locations">
+            <list>
+                <value>classpath:localOverride.${user.name}.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+    </bean>
+    
+    <bean id="wfRepository" class="org.copperengine.core.wfrepo.FileBasedWorkflowRepository" scope="singleton" init-method="start" destroy-method="shutdown">
+    	<property name="sourceDirs">
+			<list>
+				<value>src/workflow/java</value>
+			</list>
+		</property>
+    	<property name="targetDir" value="build/compiled_workflow"/>
+    </bean>
+    <!--<bean id="wfRepository_trans" class="org.copperengine.core.wfrepo.FileBasedWorkflowRepository" scope="singleton" init-method="start" destroy-method="shutdown">-->
+    	<!--<property name="sourceDirs">-->
+			<!--<list>-->
+				<!--<value>src/workflow_4_transient/java</value>-->
+			<!--</list>-->
+		<!--</property>-->
+    	<!--<property name="targetDir" value="build/compiled_workflow_4_transient"/>-->
+    <!--</bean>-->
+
+	<!--<bean id="datasource_default" class="org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource40">-->
+    	<!--<property name="databaseName" value="./build/copperExampleDB;create=true"/>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="datasource_oracle" class="oracle.jdbc.pool.OracleConnectionPoolDataSource">
+		<!--<property name="databaseName" value="C:\projects\Oracle\oracleDB\oradata/xe;create=true"/>-->
+		<property name="databaseName" value="localhost:1521/xe;create=true"/>
+		<!--<property name="databaseName" value="system/manager@localhost:41521/ORCLSID1"/>-->
+	</bean>
+
+	<!--<bean id="dbDialect" class="org.copperengine.core.persistent.DerbyDbDialect" scope="singleton" init-method="startup">-->
+		<!--<property name="wfRepository" ref="wfRepository"/>-->
+		<!--<property name="runtimeStatisticsCollector" ref="statisticsCollector"/>-->
+		<!--<property name="dataSource" ref="datasource_default"/>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="oracleDBDialect" class="org.copperengine.core.persistent.OracleDialect" scope="singleton" init-method="startup">
+		<property name="wfRepository" ref="wfRepository"/>
+		<property name="engineIdProvider" ref="engineIdProvider.oracleTester"/>
+	</bean>
+	<!--Oracle DB test beans-->
+	<bean id="persistent.dbStorageOracle" class="org.copperengine.core.persistent.ScottyDBStorage" scope="singleton">
+		<property name="transactionController" ref="txnControllerOracle"/>
+		<property name="dialect" ref="oracleDBDialect"/>
+		<property name="batcher" ref="batcherOracle"/>
+		<property name="checkDbConsistencyAtStartup" value="true"/>
+	</bean>
+
+	<!--<bean id="persistent.dbStorage" class="org.copperengine.core.persistent.ScottyDBStorage" scope="singleton">-->
+		<!--<property name="transactionController" ref="txnController"/>-->
+		<!--<property name="dialect" ref="dbDialect"/>-->
+		<!--<property name="batcher" ref="batcher"/>-->
+		<!--<property name="checkDbConsistencyAtStartup" value="true"/>-->
+	<!--</bean>-->
+	<!--<bean id="dbDialect1" class="org.copperengine.core.persistent.DerbyDbDialect" scope="singleton" init-method="startup">-->
+		<!--<property name="wfRepository" ref="wfRepository_trans"/>-->
+		<!--<property name="runtimeStatisticsCollector" ref="statisticsCollector"/>-->
+		<!--<property name="dataSource" ref="datasource_default"/>-->
+	<!--</bean>-->
+
+	<!--<bean id="persistent.dbStorage1" class="org.copperengine.core.persistent.ScottyDBStorage" scope="singleton">-->
+		<!--<property name="transactionController" ref="txnController"/>-->
+		<!--<property name="dialect" ref="dbDialect1"/>-->
+		<!--<property name="batcher" ref="batcher"/>-->
+		<!--<property name="checkDbConsistencyAtStartup" value="true"/>-->
+	<!--</bean>-->
+
+	<!--<bean id="txnController" class="org.copperengine.core.persistent.txn.CopperTransactionController" scope="singleton">-->
+		<!--<property name="dataSource" ref="datasource_default"/>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="txnControllerOracle" class="org.copperengine.core.persistent.txn.CopperTransactionController" scope="singleton">
+		<property name="dataSource" ref="datasource_oracle"/>
+	</bean>
+
+	<bean id="statisticsCollector" class="org.copperengine.core.monitoring.LoggingStatisticCollector" init-method="start" destroy-method="shutdown"/>
+	
+	<!--<bean id="batcher" class="org.copperengine.core.batcher.impl.BatcherImpl" scope="singleton" init-method="startup" destroy-method="shutdown">-->
+    	<!--<constructor-arg type="int"><value>3</value></constructor-arg>-->
+    	<!--<property name="statisticsCollector" ref="statisticsCollector"/>-->
+    	<!--<property name="batchRunner">-->
+    		<!--<bean class="org.copperengine.core.batcher.RetryingTxnBatchRunner">-->
+		    	<!--<property name="dataSource" ref="datasource_default"/>-->
+    		<!--</bean>-->
+    	<!--</property>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="batcherOracle" class="org.copperengine.core.batcher.impl.BatcherImpl" scope="singleton" init-method="startup" destroy-method="shutdown">
+		<constructor-arg type="int"><value>3</value></constructor-arg>
+		<property name="statisticsCollector" ref="statisticsCollector"/>
+		<property name="batchRunner">
+			<bean class="org.copperengine.core.batcher.RetryingTxnBatchRunner">
+				<property name="dataSource" ref="datasource_oracle"/>
+			</bean>
+		</property>
+	</bean>
+	
+    <!--<bean id="persistent.ProcessorPool.default" class="org.copperengine.core.persistent.PersistentPriorityProcessorPool" scope="singleton">-->
+    	<!--<constructor-arg type="java.lang.String"><value>P#DEFAULT</value></constructor-arg>-->
+    	<!--<constructor-arg type="org.copperengine.core.persistent.txn.TransactionController"><ref bean="txnController"/></constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="persistent.ProcessorPool.default2" class="org.copperengine.core.persistent.PersistentPriorityProcessorPool" scope="singleton">-->
+    	<!--<constructor-arg type="java.lang.String"><value>P#DEFAULT 2</value></constructor-arg>-->
+    	<!--<constructor-arg type="org.copperengine.core.persistent.txn.TransactionController"><ref bean="txnController"/></constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="persistent.ProcessorPool.default3" class="org.copperengine.core.persistent.PersistentPriorityProcessorPool" scope="singleton">-->
+    	<!--<constructor-arg type="java.lang.String"><value>P#DEFAULT 5</value></constructor-arg>-->
+    	<!--<constructor-arg type="org.copperengine.core.persistent.txn.TransactionController"><ref bean="txnController"/></constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="persistent.ProcessorPool.default4" class="org.copperengine.core.tranzient.TransientPriorityProcessorPool" scope="singleton">-->
+    	<!--<constructor-arg type="java.lang.String"><value>T#DEFAULT</value></constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="persistent.ProcessorPool.default5" class="org.copperengine.core.tranzient.TransientPriorityProcessorPool" scope="singleton">-->
+    	<!--<constructor-arg type="java.lang.String"><value>T#Second PPool</value></constructor-arg>-->
+    <!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="persistent.ProcessorPool.oracle" class="org.copperengine.core.persistent.PersistentPriorityProcessorPool" scope="singleton">
+		<constructor-arg type="java.lang.String"><value>P#DEFAULT</value></constructor-arg>
+		<constructor-arg type="org.copperengine.core.persistent.txn.TransactionController"><ref bean="txnControllerOracle"/></constructor-arg>
+	</bean>
+
+	<!--<bean id="persistent.PPManager" class="org.copperengine.core.common.DefaultProcessorPoolManager" scope="singleton">-->
+		<!--<property name="processorPools">-->
+    		<!--<list>-->
+    			<!--<ref bean="persistent.ProcessorPool.default" />-->
+		    <!--</list>-->
+  		<!--</property>-->
+	<!--</bean>-->
+	<!--<bean id="persistent.PPManager2" class="org.copperengine.core.common.DefaultProcessorPoolManager" scope="singleton">-->
+		<!--<property name="processorPools">-->
+    		<!--<list>-->
+    			<!--<ref bean="persistent.ProcessorPool.default4" />-->
+    			<!--<ref bean="persistent.ProcessorPool.default5" />-->
+		    <!--</list>-->
+  		<!--</property>-->
+	<!--</bean>-->
+	<!--<bean id="persistent.PPManager3" class="org.copperengine.core.common.DefaultProcessorPoolManager" scope="singleton">-->
+		<!--<property name="processorPools">-->
+    		<!--<list>-->
+    			<!--<ref bean="persistent.ProcessorPool.default2" />-->
+    			<!--<ref bean="persistent.ProcessorPool.default3" />-->
+		    <!--</list>-->
+  		<!--</property>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="persistent.PPManager.Oracle" class="org.copperengine.core.common.DefaultProcessorPoolManager" scope="singleton">
+		<property name="processorPools">
+			<list>
+				<ref bean="persistent.ProcessorPool.oracle" />
+			</list>
+		</property>
+	</bean>
+
+    <bean id="dependencyInjector" class="org.copperengine.spring.SpringDependencyInjector"/>
+
+	<!--<bean  id="timeoutManager" class="org.copperengine.core.tranzient.DefaultTimeoutManager">-->
+		<!--<property name="engine" ref="transient.engine"> </property>-->
+	<!--</bean>-->
+	<!--<bean  id="earlyResponseContainer" class="org.copperengine.core.tranzient.DefaultEarlyResponseContainer"/>-->
+	<!--<bean  id="ticketPoolManager" class="org.copperengine.core.common.DefaultTicketPoolManager"/>-->
+
+	<!--<bean  id="engineIdProvider.reciprocating" class="org.copperengine.core.EngineIdProviderBean">-->
+		<!--<property name="engineId" value="Reciprocating"/>-->
+	<!--</bean>-->
+	<!--<bean  id="engineIdProvider.wanker" class="org.copperengine.core.EngineIdProviderBean">-->
+		<!--<property name="engineId" value="Wanker"/>-->
+	<!--</bean>-->
+	<!--<bean  id="engineIdProvider.spark" class="org.copperengine.core.EngineIdProviderBean">-->
+		<!--<property name="engineId" value="Spark-ignition"/>-->
+	<!--</bean>-->
+	<!--<bean  id="engineIdProvider.naturally" class="org.copperengine.core.EngineIdProviderBean">-->
+		<!--<property name="engineId" value="Naturally"/>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="engineIdProvider.oracleTester" class="org.copperengine.core.EngineIdProviderBean">
+		<property name="engineId" value="OracleTestEngineID"/>
+	</bean>
+
+	<!--<bean id="transient.engine" class="org.copperengine.core.tranzient.TransientScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">-->
+		<!--<property name="idFactory">-->
+			<!--<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>-->
+		<!--</property>-->
+		<!--<property name="engineIdProvider" ref="engineIdProvider.naturally"/>-->
+		<!--<property name="poolManager" ref="persistent.PPManager2"/>-->
+		<!--<property name="timeoutManager" ref="timeoutManager"/>-->
+		<!--<property name="ticketPoolManager" ref="ticketPoolManager"/>-->
+		<!--<property name="earlyResponseContainer" ref="earlyResponseContainer"/>-->
+		<!--<property name="dependencyInjector" ref="dependencyInjector"/>-->
+		<!--&lt;!&ndash;<property name="serializer" ref="serializer"/>&ndash;&gt;-->
+		<!--<property name="wfRepository" ref="wfRepository"/>-->
+    	<!--<property name="statisticsCollector" ref="statisticsCollector"/>-->
+	<!--</bean>-->
+
+	<!--<bean  id="earlyResponseContainer1" class="org.copperengine.core.tranzient.DefaultEarlyResponseContainer">-->
+	<!--</bean>-->
+	<!--<bean  id="ticketPoolManager1" class="org.copperengine.core.common.DefaultTicketPoolManager">-->
+	<!--</bean>-->
+
+	<!--<bean id="persistent.engine" class="org.copperengine.core.persistent.PersistentScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">-->
+		<!--<property name="idFactory">-->
+			<!--<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>-->
+		<!--</property>-->
+		<!--<property name="engineIdProvider" ref="engineIdProvider.spark"/>-->
+		<!--<property name="processorPoolManager" ref="persistent.PPManager"/>-->
+		<!--<property name="dependencyInjector" ref="dependencyInjector"/>-->
+		<!--<property name="dbStorage" ref="persistent.dbStorage"/>-->
+		<!--&lt;!&ndash;<property name="serializer" ref="serializer"/>&ndash;&gt;-->
+		<!--<property name="wfRepository" ref="wfRepository"/>-->
+		<!--<property name="statisticsCollector" ref="statisticsCollector"/>-->
+	<!--</bean>-->
+
+	<!--Oracle DB test beans-->
+	<bean id="persistent.engineOracle" class="org.copperengine.core.persistent.PersistentScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">
+		<property name="idFactory">
+			<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>
+		</property>
+		<property name="engineIdProvider" ref="engineIdProvider.oracleTester"/>
+		<property name="processorPoolManager" ref="persistent.PPManager.Oracle"/>
+		<property name="dependencyInjector" ref="dependencyInjector"/>
+		<property name="dbStorage" ref="persistent.dbStorageOracle"/>
+		<!--<property name="serializer" ref="serializer"/>-->
+		<property name="wfRepository" ref="wfRepository"/>
+		<property name="statisticsCollector" ref="statisticsCollector"/>
+	</bean>
+
+
+	<!--<bean id="persistent.engine3" class="org.copperengine.core.persistent.PersistentScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">-->
+		<!--<property name="idFactory">-->
+			<!--<bean class = "org.copperengine.core.common.JdkRandomUUIDFactory"></bean>-->
+		<!--</property>-->
+		<!--<property name="engineIdProvider" ref="engineIdProvider.wanker"/>-->
+		<!--<property name="engineClusterId" value="Nautilus"/>-->
+		<!--<property name="processorPoolManager" ref="persistent.PPManager3"/>-->
+		<!--<property name="dependencyInjector" ref="dependencyInjector"/>-->
+		<!--<property name="dbStorage" ref="persistent.dbStorage"/>-->
+		<!--&lt;!&ndash;<property name="serializer" ref="serializer"/>&ndash;&gt;-->
+		<!--<property name="wfRepository" ref="wfRepository"/>-->
+    	<!--<property name="statisticsCollector" ref="statisticsCollector"/>-->
+	<!--</bean>-->
+
+
+	<!--<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">-->
+		<!--<property name="batcher" ref="batcher"/>-->
+		<!--<property name="dataSource" ref="datasource_default"/>-->
+		<!--<property name="messagePostProcessor">-->
+			<!--<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+	<!--Oracle Test beans-->
+	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">
+	<property name="batcher" ref="batcherOracle"/>
+	<property name="dataSource" ref="datasource_oracle"/>
+	<property name="messagePostProcessor">
+	<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
+	</property>
+	</bean>
+
+
+	<!--<bean id="serializer" class="org.copperengine.ext.persistent.YamlSerializer"></bean>-->
+	<bean class="org.copperengine.spring.JmxExporter" init-method="startup" destroy-method="shutdown"/>    
+
+
+	<beans:bean id="networkServiceAdapter" class="org.copperengine.examples.orchestration.adapter.NetworkServiceAdapterImpl">
+		<beans:property name="engine" ref="persistent.engine"/>
+		<beans:property name="callbachURI" value="http://localhost:9090/services/asyncNetworkServiceResponseReceiver?wsdl"/>
+		<beans:property name="networkServiceProvider" ref="networkServiceProvider"/>
+	</beans:bean>
+	
+	<beans:bean id="OrchestrationInputAdapter" class="org.copperengine.examples.orchestration.adapter.OrchestrationInputAdapter">
+		<beans:property name="engine" ref="persistent.engine"/>
+	</beans:bean>
+
+	<jaxws:client id="customerService" serviceClass="org.copperengine.customerservice.CustomerService" address="http://localhost:9092/services/CustomerService?wsdl" wsdlLocation="classpath:wsdl/CustomerService.wsdl">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:client>
+
+	<jaxws:client id="networkServiceProvider" serviceClass="org.copperengine.network.mobile.services.NetworkServiceProvider" address="http://localhost:9092/services/NetworkServiceProvider?wsdl" wsdlLocation="classpath:wsdl/MobileNetworkServices.wsdl">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+	</jaxws:client>
+
+    <jaxws:endpoint id="OrchestrationEndpoint" address="/orchestration">
+        <jaxws:implementor>
+            <beans:ref bean="OrchestrationInputAdapter" />
+        </jaxws:implementor>
+        <jaxws:properties>
+            <entry key="schema-validation-enabled" value="true" />
+        </jaxws:properties>
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature" />
+        </jaxws:features>
+    </jaxws:endpoint>     
+    
+    <jaxws:endpoint id="AsyncNetworkServiceResponseReceiverEndpoint" address="/asyncNetworkServiceResponseReceiver">
+        <jaxws:implementor>
+            <beans:ref bean="networkServiceAdapter" />
+        </jaxws:implementor>
+        <jaxws:properties>
+            <entry key="schema-validation-enabled" value="true" />
+        </jaxws:properties>
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature" />
+        </jaxws:features>
+    </jaxws:endpoint>       
+</beans>

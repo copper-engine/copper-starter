@@ -51,16 +51,39 @@
         </constructor-arg>
     </bean>
 
+    <!--<bean id="workflowInstanceIntrospector" class="org.copperengine.monitoring.server.debug.WorkflowInstanceIntrospector"  lazy-init="false">-->
+        <!--<constructor-arg type="org.copperengine.core.persistent.ScottyDBStorageInterface">-->
+            <!--<ref bean="persistent.dbStorage"/>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg type="org.copperengine.core.common.WorkflowRepository">-->
+            <!--<ref bean="wfRepository"/>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--Oracle Test beans-->
     <bean id="workflowInstanceIntrospector" class="org.copperengine.monitoring.server.debug.WorkflowInstanceIntrospector"  lazy-init="false">
         <constructor-arg type="org.copperengine.core.persistent.ScottyDBStorageInterface">
-            <ref bean="persistent.dbStorage"/>
+            <ref bean="persistent.dbStorageOracle"/>
         </constructor-arg>
         <constructor-arg type="org.copperengine.core.common.WorkflowRepository">
             <ref bean="wfRepository"/>
         </constructor-arg>
     </bean>
 
-    <bean id="derby-monitoring-db-dialect" class="org.copperengine.monitoring.server.persistent.DerbyMonitoringDbDialect">
+    <!--<bean id="derby-monitoring-db-dialect" class="org.copperengine.monitoring.server.persistent.DerbyMonitoringDbDialect">-->
+        <!--<constructor-arg type="org.copperengine.core.persistent.Serializer">-->
+            <!--<bean class="org.copperengine.core.persistent.StandardJavaSerializer"/>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg type="org.copperengine.core.audit.MessagePostProcessor">-->
+            <!--<ref bean="compressedBase64PostProcessor"/>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg type="org.copperengine.core.audit.BatchingAuditTrail">-->
+            <!--<ref bean="auditTrail"/>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--Oracle Test beans-->
+    <bean id="oracle-monitoring-db-dialect" class="org.copperengine.monitoring.server.persistent.OracleMonitoringDbDialect">
         <constructor-arg type="org.copperengine.core.persistent.Serializer">
             <bean class="org.copperengine.core.persistent.StandardJavaSerializer"/>
         </constructor-arg>
@@ -72,12 +95,22 @@
         </constructor-arg>
     </bean>
 
+    <!--<bean id="monitoring-db-storage" class="org.copperengine.monitoring.server.persistent.MonitoringDbStorage">-->
+        <!--<constructor-arg type="org.copperengine.core.persistent.txn.TransactionController">-->
+            <!--<ref bean="txnController"/>-->
+        <!--</constructor-arg>-->
+        <!--<constructor-arg type="org.copperengine.monitoring.server.persistent.DatabaseMonitoringDialect">-->
+            <!--<ref bean="oracle-monitoring-db-dialect"/>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--Oracle Test beans-->
     <bean id="monitoring-db-storage" class="org.copperengine.monitoring.server.persistent.MonitoringDbStorage">
         <constructor-arg type="org.copperengine.core.persistent.txn.TransactionController">
-            <ref bean="txnController"/>
+            <ref bean="txnControllerOracle"/>
         </constructor-arg>
         <constructor-arg type="org.copperengine.monitoring.server.persistent.DatabaseMonitoringDialect">
-            <ref bean="derby-monitoring-db-dialect"/>
+            <ref bean="oracle-monitoring-db-dialect"/>
         </constructor-arg>
     </bean>
 
@@ -100,7 +133,7 @@
         </constructor-arg>
         <constructor-arg index="2" type="java.util.List">
             <list>
-                <ref bean="persistent.engine"/>
+                <ref bean="persistent.engineOracle"/>
             </list>
         </constructor-arg>
         <constructor-arg index="3" type="org.copperengine.monitoring.server.monitoring.MonitoringDataAccessQueue">
