@@ -136,14 +136,11 @@
 	<bean  id="engineIdProvider.reciprocating" class="org.copperengine.core.EngineIdProviderBean">
 		<property name="engineId" value="Reciprocating"/>
 	</bean>
-	<bean  id="engineIdProvider.wanker" class="org.copperengine.core.EngineIdProviderBean">
-		<property name="engineId" value="Wanker"/>
-	</bean>
 	<bean  id="engineIdProvider.spark" class="org.copperengine.core.EngineIdProviderBean">
 		<property name="engineId" value="Spark-ignition"/>
 	</bean>
 	<bean  id="engineIdProvider.naturally" class="org.copperengine.core.EngineIdProviderBean">
-		<property name="engineId" value="Naturally"/>
+		<property name="engineId" value="NaturallyTest"/>
 	</bean>
 
 	<bean id="transient.engine" class="org.copperengine.core.tranzient.TransientScottyEngine" scope="singleton" init-method="startup" destroy-method="shutdown">
@@ -200,6 +197,10 @@
 		</property>
 	</bean>
 
+
+	<bean id="auditTrailQuery2" class="org.copperengine.spring.audit.AuditTrailQueryEngine" scope="singleton">
+		<property name="dataSource" ref="datasource_default"/>
+	</bean>
 
 	<!--<bean id="serializer" class="org.copperengine.ext.persistent.YamlSerializer"></bean>-->
 	<bean class="org.copperengine.spring.JmxExporter" init-method="startup" destroy-method="shutdown"/>    

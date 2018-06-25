@@ -28,7 +28,7 @@ import org.copperengine.network.mobile.services.SendSmsRequest;
         serviceName = "AsyncNetworkServiceResponseReceiverService",
         portName = "AsyncNetworkServiceResponseReceiver",
         targetNamespace = "http://services.mobile.network.copperengine.org/",
-        wsdlLocation = "classpath:wsdl/MobileNetworkServices.wsdl",
+        // wsdlLocation = "/MobileNetworkServices.wsdl",
         endpointInterface = "org.copperengine.network.mobile.services.AsyncNetworkServiceResponseReceiver")
 public class NetworkServiceAdapterImpl implements NetworkServiceAdapter, AsyncNetworkServiceResponseReceiver {
 
