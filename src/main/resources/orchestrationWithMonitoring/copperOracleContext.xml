@@ -51,10 +51,22 @@
 	<!--</bean>-->
 
 	<!--Oracle DB test beans-->
-	<bean id="datasource_oracle" class="oracle.jdbc.pool.OracleConnectionPoolDataSource">
-		<!--<property name="databaseName" value="C:\projects\Oracle\oracleDB\oradata/xe;create=true"/>-->
-		<property name="databaseName" value="localhost:1521/xe;create=true"/>
-		<!--<property name="databaseName" value="system/manager@localhost:41521/ORCLSID1"/>-->
+	<!--<bean id="datasource_oracle" class="oracle.jdbc.pool.OracleConnectionPoolDataSource">-->
+		<!--&lt;!&ndash;<property name="databaseName" value="C:\projects\Oracle\oracleDB\oradata/xe;create=true"/>&ndash;&gt;-->
+		<!--<property name="databaseName" value="localhost:1521/xe;create=true"/>-->
+		<!--&lt;!&ndash;<property name="databaseName" value="system/manager@localhost:41521/ORCLSID1"/>&ndash;&gt;-->
+	<!--</bean>-->
+	<bean id="datasource_oracle" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<!--<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe:COP_01"/>-->
+		<property name="user" value="COP_USER"/>
+		<property name="password" value="oracle"/>
+		<property name="minPoolSize" value="1"/>
+		<property name="maxPoolSize" value="8"/>
+		<!--<property name="preferredTestQuery" value="SELECT 1 FROM DUAL"/>-->
+		<property name="preferredTestQuery" value="SELECT * FROM COP_WORKFLOW_INSTANCE"/>
+		<property name="idleConnectionTestPeriod" value="15"/>
 	</bean>
 
 	<!--<bean id="dbDialect" class="org.copperengine.core.persistent.DerbyDbDialect" scope="singleton" init-method="startup">-->
@@ -282,13 +294,18 @@
 		<!--</property>-->
 	<!--</bean>-->
 
+	<bean id="messagePostProcessor" class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
+
 	<!--Oracle Test beans-->
-	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">
+	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton"  init-method="startup">
 	<property name="batcher" ref="batcherOracle"/>
 	<property name="dataSource" ref="datasource_oracle"/>
-	<property name="messagePostProcessor">
-	<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
-	</property>
+	<property name="messagePostProcessor" ref="messagePostProcessor" />
+	</bean>
+
+	<bean id="auditTrailQuery" class="org.copperengine.core.audit.ScottyAuditTrailQueryEngine" scope="singleton">
+		<property name="messagePostProcessor" ref="messagePostProcessor" />
+		<property name="dbStorage" ref="persistent.dbStorageOracle"/>
 	</bean>
 
 
@@ -297,13 +314,13 @@
 
 
 	<beans:bean id="networkServiceAdapter" class="org.copperengine.examples.orchestration.adapter.NetworkServiceAdapterImpl">
-		<beans:property name="engine" ref="persistent.engine"/>
+		<beans:property name="engine" ref="persistent.engineOracle"/>
 		<beans:property name="callbachURI" value="http://localhost:9090/services/asyncNetworkServiceResponseReceiver?wsdl"/>
 		<beans:property name="networkServiceProvider" ref="networkServiceProvider"/>
 	</beans:bean>
 	
 	<beans:bean id="OrchestrationInputAdapter" class="org.copperengine.examples.orchestration.adapter.OrchestrationInputAdapter">
-		<beans:property name="engine" ref="persistent.engine"/>
+		<beans:property name="engine" ref="persistent.engineOracle"/>
 	</beans:bean>
 
 	<jaxws:client id="customerService" serviceClass="org.copperengine.customerservice.CustomerService" address="http://localhost:9092/services/CustomerService?wsdl" wsdlLocation="classpath:wsdl/CustomerService.wsdl">

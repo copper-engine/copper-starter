@@ -93,6 +93,7 @@ dependencies {
     compile "org.springframework:spring-jdbc:$springVersion"
     compile "org.springframework:spring-tx:$springVersion"
     compile 'org.springframework:spring-dao:2.0.8'
+    compile "oracle:ojdbc7:12.1.0.1"
 
 //    compile("org.springframework:spring-asm:3.1.4") {
 //        exclude group: "asm", module: "asm"
