@@ -189,18 +189,19 @@
     	<property name="statisticsCollector" ref="statisticsCollector"/>
 	</bean>
 
-	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton">
+	<bean id="messagePostProcessor" class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
+
+	<bean id="auditTrail" class="org.copperengine.core.audit.BatchingAuditTrail" scope="singleton" init-method="startup">
 		<property name="batcher" ref="batcher"/>
 		<property name="dataSource" ref="datasource_default"/>
-		<property name="messagePostProcessor">
-			<bean class="org.copperengine.core.audit.CompressedBase64PostProcessor"/>
-		</property>
+		<property name="messagePostProcessor" ref="messagePostProcessor" />
 	</bean>
 
-
-	<bean id="auditTrailQuery2" class="org.copperengine.spring.audit.AuditTrailQueryEngine" scope="singleton">
-		<property name="dataSource" ref="datasource_default"/>
+	<bean id="auditTrailQuery2" class="org.copperengine.core.audit.ScottyAuditTrailQueryEngine" scope="singleton">
+		<property name="messagePostProcessor" ref="messagePostProcessor" />
+		<property name="dbStorage" ref="persistent.dbStorage"/>
 	</bean>
+
 
 	<!--<bean id="serializer" class="org.copperengine.ext.persistent.YamlSerializer"></bean>-->
 	<bean class="org.copperengine.spring.JmxExporter" init-method="startup" destroy-method="shutdown"/>    
