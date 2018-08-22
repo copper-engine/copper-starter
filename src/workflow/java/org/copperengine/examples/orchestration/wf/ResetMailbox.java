@@ -63,16 +63,15 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     public void main() throws Interrupt {
         logger.info("workflow instance started");
         auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
-//
-//        try {
-//            //Simulate RUNNING state of workflow for 30 seconds
-//            Thread.sleep(30_000);
-//        } catch (java.lang.InterruptedException ex) {}
+
+        try {
+            //Simulate RUNNING state of workflow for 30 seconds
+            Thread.sleep(30_000);
+        } catch (java.lang.InterruptedException ex) {}
 
 
         //Simulate WAITING state of workflow for 3 minutes
-        sleep(5);
-//        sleep(180);
+        sleep(180);
 
         if (!checkSecretOK()) {
             sendSms("Authentication failed");
