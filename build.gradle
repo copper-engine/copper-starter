@@ -19,9 +19,8 @@ repositories {
 }
 
 ext {
-//    apacheCxfVersion = '3.2.1'
     apacheCxfVersion = '3.0.5'
-    copperVersion = '5.0.0-SNAPSHOT'
+    copperVersion = '5.1.0'
     springVersion = '5.0.5.RELEASE'
 }
 
