@@ -31,7 +31,11 @@ import org.copperengine.examples.orchestration.data.ResetMailboxData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
 @WorkflowDescription(alias = ResetMailboxDef.NAME, majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
 public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
@@ -43,7 +47,15 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     private transient CustomerService customerService;
     private transient NetworkServiceAdapter networkServiceAdapter;
     private transient AuditTrail auditTrail;
-    
+    public java.util.Map mapTest = new HashMap<>();
+    public java.util.List listTest = new ArrayList<String>();
+    public String[] arrayTest = new String[2];
+    public java.util.Date dateTest = null;
+    public java.sql.Date sqlDateTest = null;
+    public java.time.ZonedDateTime zonedDateTimeTest = null;
+    public java.time.Instant instantTest = null;
+
+
     @AutoWire
     public void setAuditTrail(AuditTrail auditTrail) {
         this.auditTrail = auditTrail;
@@ -63,6 +75,27 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     public void main() throws Interrupt {
         logger.info("workflow instance started");
         auditTrail.synchLog(1, new Date(), "conversationId", "context", this.getId(), null, null, "workflow instance started", "");
+
+        this.dateTest = new java.util.Date();
+        this.sqlDateTest = new java.sql.Date(this.dateTest.getTime());
+        this.zonedDateTimeTest = ZonedDateTime.now();
+        this.instantTest = this.dateTest.toInstant();
+
+
+        this.arrayTest[0] = "testString1";
+        this.arrayTest[1] = "testString2";
+
+        this.listTest.add("List String 1");
+        this.listTest.add("List String 2");
+
+        this.mapTest.put("Key1", "Value1");
+        this.mapTest.put("Key2", "Value2");
+        this.mapTest.put("Key_Date", this.dateTest);
+        this.mapTest.put("Key_Array", this.arrayTest);
+        this.mapTest.put("Key_List", this.listTest);
+
+
+
 
         try {
             //Simulate RUNNING state of workflow for 30 seconds
