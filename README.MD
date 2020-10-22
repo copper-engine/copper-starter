@@ -1,8 +1,13 @@
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/copper-engine/copper-engine/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/github/workflow/status/copper-engine/copper-starter/Build%20project)](https://github.com/copper-engine/copper-starter/actions?query=workflow%3A%22Build+project%22)
+
 copper-starter
 ==============
 
-A quickstarter example project for copper-engine.
-[copper engine](https://github.com/copper-engine/copper-engine)
+A quickstarter example project for [copper engine](https://github.com/copper-engine/copper-engine).
+
+[Documentation](https://copper-engine.org/docs/getting-started/)
 
 Features of copper-engine:
 ---------------------------
