@@ -6,7 +6,7 @@ A quickstarter example project for copper-engine.
 
 Features of copper-engine:
 ---------------------------
-* a workflow engine that provides unlimited "threads" 
+* a workflow engine that provides unlimited "threads"
 * threads will be serialized transient or persistent
 * Workflow-Files with wait()-continuations coded in Java
 * Workflow-Files with version attributes to support old long running jobs
@@ -16,6 +16,5 @@ Features of copper-engine:
 
 What you need to have:
 ----------------------
-* Java JDK 1.7+
-* gradle 2.0+
-* Java IDE Eclipse or intellij IDEA or terminal 
+* Java JDK 1.8+
+* Java IDE Eclipse or intellij IDEA or terminal

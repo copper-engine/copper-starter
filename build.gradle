@@ -2,26 +2,18 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 wrapper {
-    gradleVersion = '4.6'
+    gradleVersion = '6.7'
     distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 }
 
 repositories {
-    maven {
-        url 'https://intranet.scoop-gmbh.de/artifactory/repo'
-        credentials {
-            username = "artifactory"
-            password = "nirvokUpGov"
-        }
-    }
-    mavenLocal()
     mavenCentral()
 }
 
 ext {
-    apacheCxfVersion = '3.0.5'
-    copperVersion = '5.0.1'
-    springVersion = '5.0.5.RELEASE'
+    apacheCxfVersion = '3.3.1'
+    copperVersion = '5.2.0'
+    springVersion = '5.2.9.RELEASE'
 }
 
 
@@ -75,11 +67,11 @@ dependencies {
     compile "org.copper-engine:copper-jmx-interface:$copperVersion"
     compile "org.copper-engine:copper-spring:$copperVersion"
 
-    compile 'org.copper-engine:copper-monitoring-core:4.1+'
-    compile('org.copper-engine:copper-monitoring-server:4.1+') {
+    compile 'org.copper-engine:copper-monitoring-core:4.2+'
+    compile('org.copper-engine:copper-monitoring-server:4.2+') {
         exclude module: 'log4j'
     }
-    compile('org.copper-engine:copper-monitoring-client:4.1+') {
+    compile('org.copper-engine:copper-monitoring-client:4.2+') {
         exclude module: 'slf4j-log4j12'
         exclude module: 'log4j'
     }
@@ -92,7 +84,7 @@ dependencies {
     compile "org.springframework:spring-jdbc:$springVersion"
     compile "org.springframework:spring-tx:$springVersion"
     compile 'org.springframework:spring-dao:2.0.8'
-    compile "oracle:ojdbc7:12.1.0.1"
+    compile 'com.oracle.database.jdbc:ojdbc10:19.7.0.0'
 
 //    compile("org.springframework:spring-asm:3.1.4") {
 //        exclude group: "asm", module: "asm"
@@ -118,8 +110,8 @@ dependencies {
 //    runtime 'org.apache.derby:derby:10.13.1.1'
 //    runtime "org.slf4j:slf4j-log4j12:1.7.21"
 
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha4'
-    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.3.0-alpha4'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.0-alpha5'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.3.0-alpha5'
 
     wsgen "org.apache.cxf:cxf-tools-wsdlto-core:$apacheCxfVersion"
     wsgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:$apacheCxfVersion"
@@ -248,4 +240,3 @@ eclipse {
         }
     }
 }
-
