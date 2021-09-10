@@ -15,50 +15,10 @@
  */
 package org.copperengine.examples.simple;
 
+import java.io.Serial;
 import java.io.Serializable;
 
-public class HelloWorldRequest implements Serializable {
-
+public record HelloWorldRequest(String senderName) implements Serializable {
+    @Serial
     private static final long serialVersionUID = -190879447387202081L;
-
-    private final String senderName;
-
-    public HelloWorldRequest(String senderName) {
-        this.senderName = senderName;
-    }
-
-    public String getSenderName() {
-        return senderName;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((senderName == null) ? 0 : senderName.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        HelloWorldRequest other = (HelloWorldRequest) obj;
-        if (senderName == null) {
-            if (other.senderName != null)
-                return false;
-        } else if (!senderName.equals(other.senderName))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "HelloWorldData [name=" + senderName + "]";
-    }
-
 }

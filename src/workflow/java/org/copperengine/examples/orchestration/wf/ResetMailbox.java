@@ -31,15 +31,15 @@ import org.copperengine.examples.orchestration.data.ResetMailboxData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
 @WorkflowDescription(alias = ResetMailboxDef.NAME, majorVersion = 1, minorVersion = 0, patchLevelVersion = 0)
 public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
-
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = LoggerFactory.getLogger(ResetMailbox.class);
@@ -47,8 +47,8 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
     private transient CustomerService customerService;
     private transient NetworkServiceAdapter networkServiceAdapter;
     private transient AuditTrail auditTrail;
-    public java.util.Map mapTest = new HashMap<>();
-    public java.util.List listTest = new ArrayList<String>();
+    public java.util.Map<String,Object> mapTest = new HashMap<>();
+    public java.util.List<String> listTest = new ArrayList<>();
     public String[] arrayTest = new String[2];
     public java.util.Date dateTest = null;
     public java.sql.Date sqlDateTest = null;
@@ -122,10 +122,10 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
         for (int i = 0; ; i++) {
             try {
                 GetCustomersByMsisdnRequest parameters = new GetCustomersByMsisdnRequest();
-                parameters.setMsisdn(getData().getMsisdn());
+                parameters.setMsisdn(getData().msisdn());
                 GetCustomersByMsisdnResponse response = customerService.getCustomersByMsisdn(parameters);
                 logger.debug("Received customer data: {}", response.getReturn());
-                return getData().getSecret().equals(response.getReturn().getSecret());
+                return getData().secret().equals(response.getReturn().getSecret());
             } catch (Exception e) {
                 logger.error("checkSecretOK failed", e);
             }
@@ -140,7 +140,7 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
     private boolean resetMailbox() throws Interrupt {
         for (int i = 0; ; i++) {
-            final String correlationId = networkServiceAdapter.resetMailbox(getData().getMsisdn());
+            final String correlationId = networkServiceAdapter.resetMailbox(getData().msisdn());
             wait(WaitMode.ALL, 5 * 60 * 60 * 1000, correlationId);
             final Response<ResetMailboxResponse> response = getAndRemoveResponse(correlationId);
             if (response.isTimeout()) {
@@ -164,7 +164,7 @@ public class ResetMailbox extends PersistentWorkflow<ResetMailboxData> {
 
     private void sendSms(String msg) throws Interrupt {
         logger.info("sendSMS({})", msg);
-        networkServiceAdapter.sendSMS(getData().getMsisdn(), msg);
+        networkServiceAdapter.sendSMS(getData().msisdn(), msg);
     }
 
     private void sleep(int seconds) throws Interrupt {

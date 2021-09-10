@@ -47,9 +47,7 @@ public class OrchestrationInputAdapter implements OrchestrationService {
     public void resetMailbox(String msisdn, String secret) {
         try {
             logger.info("resetMailbox(msisdn={}, secret={})", msisdn, secret);
-            ResetMailboxData data = new ResetMailboxData();
-            data.setMsisdn(msisdn);
-            data.setSecret(secret);
+            ResetMailboxData data = new ResetMailboxData(msisdn, secret);
             engine.run(wfName, data);
             logger.info("Workflow instance {} launched", wfName);
         } catch (Exception e) {

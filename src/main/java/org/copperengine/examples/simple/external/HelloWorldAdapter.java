@@ -83,7 +83,7 @@ public class HelloWorldAdapter {
                     return;
                 }
 
-                String answer = "Answer " + request.getSenderName() + "!";
+                String answer = "Answer " + request.senderName() + "!";
                 HelloWorldService.get().sendResponse(correlationId, true, answer);
             }
         });
