@@ -3,6 +3,7 @@ apply plugin: 'eclipse'
 
 wrapper {
     gradleVersion = '6.7'
+    gradleVersion = '7.2'
     distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 }
 
