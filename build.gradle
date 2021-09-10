@@ -8,12 +8,12 @@ wrapper {
 
 repositories {
     mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+//    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 ext {
     apacheCxfVersion = '3.3.1'
-    copperVersion = '5.3.1-SNAPSHOT'
+    copperVersion = '5.4.0'
     springVersion = '5.2.9.RELEASE'
 }
 
